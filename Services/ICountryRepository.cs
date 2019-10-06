@@ -11,7 +11,7 @@ namespace CoderzoneGrapQLAPI.Services
 		Task<Country> GetCountryAsync(Guid CountryId);
 		Task<Country> GetCountryOfUserAsync(Guid userId);
 		Task<Country> GetCountryOfStateAsync(Guid stateId);
-		Task<IEnumerable<User>> GetUsersForCountryAsync(Guid CountryId);
+		Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid CountryId);
 		Task<IEnumerable<State>> GetStatesForCountryAsync(Guid CountryId);
 		Task<bool> CountryExistsAsync(Guid CountryId);
 		Task<bool> IsDuplicateCountryName(Guid countryId, string countryName);

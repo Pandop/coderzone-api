@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoderzoneGrapQLAPI.Services;
 using GraphiQl;
 using GraphQL;
 using GraphQL.Server;
@@ -9,6 +10,7 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,12 +18,13 @@ namespace CoderzoneGrapQLAPI
 {
 	public class Startup
 	{
-		public IConfiguration CurrentEnvironment { get; set; }
-		public IConfiguration Configuration { get; }
+		public IHostingEnvironment _env { get; set; }
+		public static IConfiguration Configuration { get; set; }
 
-		public Startup(IHostingEnvironment env, IConfiguration configuration) { }
-		public Startup(IConfiguration configuration)
+		//public Startup(IConfiguration configuration) { }
+		public Startup(IHostingEnvironment env, IConfiguration configuration)
 		{
+			_env = env;
 			Configuration = configuration;
 		}
 
@@ -30,28 +33,35 @@ namespace CoderzoneGrapQLAPI
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			// add mvc 
+			// add mvc if needed
 			services.AddMvc();
 
-			// Add GraphQL
+			// Setup DB Connections
+			services.AddDbContext<CoderzoneApiDbContext>(options => options.UseSqlServer(Configuration["connectionStrings:CoderzoneDbConnectionString"]));
+
+			// Register Users Repository
+
+			// Register Profile Repository
+
+			// Register Country Repository
+
+			// Register State Repository
+
+			// Register GraphQL
 			services.AddGraphQL();
 			//services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+			//Register GraphQL resolver
 			//services.AddSingleton<IDependencyResolver>(
 			//	provider => new FuncDependencyResolver(provider.GetRequiredService)
 			//);
+			//Register GraphQL Schema
+			//services.AddScoped<CoderzoneApiSchema>();
 
-			// Add the schema and query for graphql
+			// expose developmet exceptions
+			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
+					.AddGraphTypes(ServiceLifetime.Scoped)
+					.AddDataLoader();
 
-			// Send our db context to graphql to use
-			//var optionsBuilder = new DbContextOptionsBuilder<CsharpReferenceDBContext>().UseNpgsql(dbConnectionString);
-			//using (var context = new CsharpReferenceDBContext(optionsBuilder.Options, null))
-			//{
-			//	EfGraphQLConventions.RegisterInContainer(services, context.Model);
-			//}
-
-			// add DBContext connection
-
-			// add services Interfaces
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,12 +70,16 @@ namespace CoderzoneGrapQLAPI
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-			}
+			}            
 
-			// use graphQLHttp
+			// set up cors
+			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+			// use graphQL passing in the schema
+			//app.UseGraphQL<CoderzoneApiSchema>();
 			app.UseGraphiQl();
 
-
+			// set up as MVC if necessary
 			app.UseMvc();
 
 			// seed the databse

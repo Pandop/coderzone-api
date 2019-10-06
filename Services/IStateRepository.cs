@@ -11,8 +11,8 @@ namespace CoderzoneGrapQLAPI.Services
 		Task<ICollection<State>> GetStatesAsync();
 		Task<State> GetStateAsync(Guid stateId);
 		Task<Country> GetCountryForStateAsync(Guid countryId);
-		Task<User> GetUserFromStateAsync(Guid userId);
-		Task<User> GetAllUserFromStateAsync(Guid stateId);
+		Task<Programmer> GetUserFromStateAsync(Guid userId);
+		Task<Programmer> GetAllUserFromStateAsync(Guid stateId);
 		Task<bool> StateExistsAsync(Guid stateId);
 		Task<bool> IsDuplicateStateName(Guid stateId, string stateName);
 	}

@@ -7,8 +7,8 @@ namespace CoderzoneGrapQLAPI.Services
 {
 	public interface IUserRepository
 	{
-		Task<IEnumerable<User>> GetUsersAsync();
-		Task<User> GetUserAsync(Guid userId);
+		Task<IEnumerable<Programmer>> GetUsersAsync();
+		Task<Programmer> GetUserAsync(Guid userId);
 		Task<Profile> GetUserProfileAsync(Guid profileId);
 		Task<Country> GetCountryForUserAsync(Guid userId);
 
