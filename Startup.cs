@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoderzoneGrapQLAPI.DbSeeds;
+using CoderzoneGrapQLAPI.GraphQL;
 using CoderzoneGrapQLAPI.Services;
 using GraphiQl;
 using GraphQL;
@@ -45,18 +46,19 @@ namespace CoderzoneGrapQLAPI
 			// Register Profile Repository
 
 			// Register Country Repository
+			services.AddScoped<ICountryRepository, CountryRepository>();
+			//services.AddSingleton<CoderzoneApiQuery>();
 
 			// Register State Repository
 
-			// Register GraphQL
-			services.AddGraphQL();
-			//services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+			// Register GraphQL			
+			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
 			//Register GraphQL resolver
-			//services.AddSingleton<IDependencyResolver>(
-			//	provider => new FuncDependencyResolver(provider.GetRequiredService)
-			//);
+			services.AddScoped<IDependencyResolver>(
+				provider => new FuncDependencyResolver(provider.GetRequiredService)
+			);
 			//Register GraphQL Schema
-			//services.AddScoped<CoderzoneApiSchema>();
+			services.AddScoped<CoderzoneApiSchema>();
 
 			// expose developmet exceptions
 			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
@@ -77,8 +79,10 @@ namespace CoderzoneGrapQLAPI
 			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 			// use graphQL passing in the schema
-			//app.UseGraphQL<CoderzoneApiSchema>();
-			app.UseGraphiQl();
+			app.UseGraphiQl("/graphiql", "/graphql");
+			app.UseGraphQL<CoderzoneApiSchema>("/graphql");
+			//app.UseGraphiQl("/graphiql");
+			//app.UseGraphiQl();
 
 			// set up as MVC if necessary
 			app.UseMvc();
