@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoderzoneGrapQLAPI.DbSeeds;
 using CoderzoneGrapQLAPI.Services;
 using GraphiQl;
 using GraphQL;
@@ -65,12 +66,12 @@ namespace CoderzoneGrapQLAPI
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, CoderzoneApiDbContext context)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-			}            
+			}
 
 			// set up cors
 			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
@@ -82,7 +83,8 @@ namespace CoderzoneGrapQLAPI
 			// set up as MVC if necessary
 			app.UseMvc();
 
-			// seed the databse
+			// Seeding the DB
+			context.SeedDataContext();
 		}
 	}
 }
