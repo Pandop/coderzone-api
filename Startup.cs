@@ -49,6 +49,7 @@ namespace CoderzoneGrapQLAPI
 			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
 			services.AddScoped<IProfileRepository, ProfileRepository>();
+			services.AddScoped<IProjectRepository, ProjectRepository>();
 
 			//services.AddSingleton<ICountryRepository, CountryRepository>();
 			//services.AddSingleton<CoderzoneApiQuery>();

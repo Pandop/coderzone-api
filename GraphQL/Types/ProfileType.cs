@@ -19,9 +19,10 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 			Field(t => t.City);
 			Field(t => t.Street);
 			Field(t => t.Number);
-			Field(t => t.DatePublished);
 			Field(t => t.CreatedAt);
 			Field(t => t.UpdatedAt);
+			Field(t => t.ProgrammerId, type: typeof(IdGraphType));
+			Field(t => t.DatePublished);
 		}
 	}
 }

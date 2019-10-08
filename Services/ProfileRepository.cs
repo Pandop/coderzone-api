@@ -20,13 +20,13 @@ namespace CoderzoneGrapQLAPI.Services
 			return Task.FromResult(_profileContext.Profiles.AsEnumerable());
 		}
 
-		public Task<Profile> GetProgrammerProfileAsync(Guid profileId)
+		public Task<Profile> GetProgrammerProfileAsync(Guid programmerId)
 		{
 			// Empty programmerId field
-			if (profileId == Guid.Empty) throw new ArgumentNullException(nameof(profileId));
+			if (programmerId == Guid.Empty) throw new ArgumentNullException(nameof(programmerId));
 
 			// Fetch the programmer's profile
-			return Task.FromResult(_profileContext.Profiles.FirstOrDefault(p => p.Id == profileId));
+			return Task.FromResult(_profileContext.Profiles.FirstOrDefault(p => p.ProgrammerId == programmerId));
 		}
 
 		public Task<bool> ProgrammerProfileExistsAsync(Guid profileId)

@@ -10,5 +10,7 @@ namespace CoderzoneGrapQLAPI.Services
 	{
 		Task<IEnumerable<Programmer>> GetProgrammersAsync();
 		Task<Programmer> GetProgrammerAsync(Guid programmerId);
+		Task<IEnumerable<Project>> GetAllProjectsByProgrammerAsync(Guid programmerId);
+		Task<bool> ProgrammerExistsAsync(Guid programmerId);
 	}
 }

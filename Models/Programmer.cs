@@ -15,6 +15,7 @@ namespace CoderzoneGrapQLAPI.Models
 		public override string PasswordHash { get; set; }
 		public State State { get; set; }
 		public Country Country { get; set; }
+		//public Guid ProfileId { get; set; }
 		public Profile Profile { get; set; }
 		public virtual ICollection<Project> Projects { get; set; }
 		public virtual ICollection<WorkExperience> WorkExperiences { get; set; }

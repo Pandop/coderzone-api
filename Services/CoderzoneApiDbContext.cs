@@ -27,6 +27,19 @@ namespace CoderzoneGrapQLAPI.Services
 		//public virtual DbSet<Recommendation> Recommendation { get; set; }
 
 		// Set up many to many relationships if needed
-		//protected override void OnModelCreating(ModelBuilder modelBuilder){}
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder
+				.Entity<Programmer>()
+				.HasOne(c => c.Profile)
+				.WithOne(p => p.Programmer);
+
+			modelBuilder
+				.Entity<Profile>()
+				.HasOne(c => c.Programmer)
+				.WithOne(p => p.Profile)
+				.HasForeignKey<Profile>(p => p.ProgrammerId);
+
+		}
 	}
 }

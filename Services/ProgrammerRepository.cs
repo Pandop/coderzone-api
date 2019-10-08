@@ -15,6 +15,12 @@ namespace CoderzoneGrapQLAPI.Services
 			_programmerContext = programmerContext;
 		}
 
+		public Task<IEnumerable<Project>> GetAllProjectsByProgrammerAsync(Guid programmerId)
+		{
+			// Fetch all Projects from programmer
+			return Task.FromResult(_programmerContext.Projects.Where(p => p.Programmer.Id == programmerId).AsEnumerable());
+		}
+
 		public Task<Programmer> GetProgrammerAsync(Guid programmerId)
 		{
 			// Empty programmerId field
@@ -27,6 +33,15 @@ namespace CoderzoneGrapQLAPI.Services
 		public Task<IEnumerable<Programmer>> GetProgrammersAsync()
 		{
 			return Task.FromResult(_programmerContext.Programmers.AsEnumerable());
+		}
+
+		public Task<bool> ProgrammerExistsAsync(Guid programmerId)
+		{
+			// bookId is null or empty
+			if (programmerId == Guid.Empty) throw new ArgumentNullException(nameof(programmerId));
+
+			// Return true if author with authorId exists
+			return Task.FromResult(_programmerContext.Profiles.Any(p => p.Id == programmerId));
 		}
 	}
 }
