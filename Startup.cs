@@ -47,6 +47,10 @@ namespace CoderzoneGrapQLAPI
 
 			// Register Country Repository
 			services.AddScoped<ICountryRepository, CountryRepository>();
+			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
+			services.AddScoped<IProfileRepository, ProfileRepository>();
+
+			//services.AddSingleton<ICountryRepository, CountryRepository>();
 			//services.AddSingleton<CoderzoneApiQuery>();
 
 			// Register State Repository
