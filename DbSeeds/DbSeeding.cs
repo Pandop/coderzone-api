@@ -18,6 +18,7 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 			//userManager.CreateAsync(user, "adasdas");
 			// Seed the database the country table is empty
 			if (coderzoneApiContext.Countries.Count() == 0) {
+				var hasher = new PasswordHasher<Programmer>();
 				var countries = new List<Country>() {
 					new Country()
 					{
@@ -34,7 +35,7 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 									{
 										Email = "s.kel@kel.com",
 										UserName = "amenemope@2000",
-										//PasswordHash =hashedPwd,
+										PasswordHash =hasher.HashPassword(null,"user@123"),
 										Profile = new Profile
 										{
 											FirstName = "Kelei",
@@ -118,7 +119,7 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 									{
 										Email = "d.okelo@kel.com",
 										UserName = "amenpaleguangee@2000",
-										//PasswordHash =hashedPwd,
+										PasswordHash =hasher.HashPassword(null,"user@321"),
 										Profile = new Profile
 										{
 											FirstName = "Okello",
