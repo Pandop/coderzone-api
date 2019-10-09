@@ -18,18 +18,30 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 			Field(t => t.PhoneNumber);
 			Field<ProfileType>(
 				name: "profile",
-				//arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id" }),
-				resolve: context =>
-				{
-					//var profileId = context.GetArgument<Guid>("id");
-					var profileId = context.Source.Id;
-					
-					return profile.GetProgrammerProfileAsync(profileId);
-				}
+				resolve: context => profile.GetProgrammerProfileAsync(context.Source.Id)
+			);
+			Field<CountryType>(
+				name: "country",
+				resolve: context => programmer.GetCountryForProgrammerAsync(context.Source.Id)
 			);
 			Field<ListGraphType<ProjectType>>(
 				name: "projects",
 				resolve: context => programmer.GetAllProjectsByProgrammerAsync(context.Source.Id)
+
+			);
+			Field<ListGraphType<WorkExperienceType>>(
+				name: "works",
+				resolve: context => programmer.GetAllWorkExperiencesByProgrammerAsync(context.Source.Id)
+
+			);
+			Field<ListGraphType<QualificationType>>(
+				name: "qualifications",
+				resolve: context => programmer.GetAllQualificationsByProgrammerAsync(context.Source.Id)
+
+			);
+			Field<ListGraphType<SkillType>>(
+				name: "skills",
+				resolve: context => programmer.GetAllSkillsByProgrammerAsync(context.Source.Id)
 
 			);
 		}

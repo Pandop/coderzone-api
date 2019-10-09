@@ -1,5 +1,6 @@
 ﻿using CoderzoneGrapQLAPI.Models;
 using CoderzoneGrapQLAPI.Services;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,11 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 		//public static void SeedDataContext(this CoderzoneApiDbContext coderzoneApiContext)
 		public static void SeedDataContext(this CoderzoneApiDbContext coderzoneApiContext)
 		{
+			var user = new Programmer();
+			//var hashedPwd = userManager.PasswordHasher.HashPassword(user, "12343#QWqqwe");
+			//userManager.CreateAsync(user, "adasdas");
 			// Seed the database the country table is empty
-			if (coderzoneApiContext.Countries.Count() == 0) { 
+			if (coderzoneApiContext.Countries.Count() == 0) {
 				var countries = new List<Country>() {
 					new Country()
 					{
@@ -30,6 +34,7 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 									{
 										Email = "s.kel@kel.com",
 										UserName = "amenemope@2000",
+										//PasswordHash =hashedPwd,
 										Profile = new Profile
 										{
 											FirstName = "Kelei",
@@ -41,7 +46,7 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 											Number = 12,
 											CreatedAt = DateTime.Now,
 											UpdatedAt = DateTime.Now,
-											DatePublished = new DateTime(2019, 10, 7),											
+											DatePublished = new DateTime(2019, 10, 7),
 										},
 										Projects = new List<Project>()
 										{
@@ -113,6 +118,7 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 									{
 										Email = "d.okelo@kel.com",
 										UserName = "amenpaleguangee@2000",
+										//PasswordHash =hashedPwd,
 										Profile = new Profile
 										{
 											FirstName = "Okello",
@@ -130,21 +136,21 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 										{
 											new Project
 											{
-												Name ="Codebot Development",
-												ImageUrl ="https://codebots.com/site/img/20170327-codebots-logo-01.png",
-												Description="The Codebots experiment is one of community-driven change and disruption. We're designing this awesome platform for you, so please keep hitting us up with your ideas and opinions",
+												Name ="Codebot Jinkin Deployment",
+												ImageUrl ="https://codebots.com/site/img/icon-developing-a-continuous-learning-mindset.png",
+												Description="Providing continuous learning opportunities for your employees, including opportunities around new technologies, practices and industry developments, strengthens your workforce to adapt quickly to a rapidly changing world",
 
 											},
 											new Project
 											{
-												Name ="Reactbot Development",
-												ImageUrl ="https://codebots.com/site/img/20170327-codebots-logo-01.png",
+												Name ="Reactbot Feature Development",
+												ImageUrl ="https://codebots.com/site/img/legacy-burdens_codebots-blog-thumbnail.png",
 												Description="The real value of doing market research became clear when we realised we had missed something",
 											},
 											new Project
 											{
-												Name ="CSharpbot Testing",
-												ImageUrl ="https://codebots.com/site/img/20170327-codebots-logo-01.png",
+												Name ="CSharpbot Selenium Testing",
+												ImageUrl ="https://codebots.com/site/img/scaling-up-software-people-fit_codebots-blog-thumbnail.png",
 												Description="The real value of doing market research became clear when we realised we had missed something",
 											}
 										},
@@ -152,17 +158,17 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 										{
 											new WorkExperience
 											{
-												Title="Delivering Codebots",
+												Title="Delivering Codebots features",
 												Description="For the past several weeks, our designers have been exploring the different directions we could take for the Codebots brand.",
-												StartDate = new DateTime(2019, 6, 7),
-												EndDate = new DateTime(2019, 10, 7)
+												StartDate = new DateTime(2019, 4, 12),
+												EndDate = new DateTime(2019, 6, 24)
 											},
 											new WorkExperience
 											{
-												Title="Delivering Reactbot",
+												Title="Delivering Reactbot Selenium Testing",
 												Description="To test our favourite two logo designs, we surveyed more than 100 designers, developers, business owners, and tech enthusiasts to get their help.",
-												StartDate = new DateTime(2019, 7, 7),
-												EndDate = new DateTime(2019, 10, 7)
+												StartDate = new DateTime(2019, 8, 7),
+												EndDate = new DateTime(2019, 9, 3)
 											},
 											new WorkExperience
 											{
@@ -174,9 +180,9 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 										},
 										Qualifications = new List<Qualification>()
 										{
-											new Qualification{ Title="BSc of computer science", StartDate=new DateTime(2016,3,7),EndDate=new DateTime(2019,10,7), Description="Completed software development"},
-											new Qualification{Title="Diploma of Project Management", StartDate=new DateTime(2018,3,7),EndDate=new DateTime(2018,9,7), Description="Completed project management in software development in agile environment"},
-											new Qualification{Title="Certificate of Database Design", StartDate=new DateTime(2019,7,7),EndDate=new DateTime(2019,10,5), Description="Completed a certificate of database design using MYSQL"},
+											new Qualification{ Title="BSc of computer science", StartDate=new DateTime(2017,11,7),EndDate=new DateTime(2019,10,7), Description="Completed software development"},
+											new Qualification{Title="Diploma of Agile Management", StartDate=new DateTime(2017,8,7),EndDate=new DateTime(2018,9,7), Description="Completed project management in software development in agile environment"},
+											new Qualification{Title="Advanced Database Design", StartDate=new DateTime(2019,7,7),EndDate=new DateTime(2019,10,5), Description="Completed a certificate of database design using MYSQL"},
 										},
 										Skills = new List<Skill>()
 										{
