@@ -10,11 +10,26 @@ namespace CoderzoneGrapQLAPI.GraphQL
 {
 	public class CoderzoneApiQuery : ObjectGraphType
 	{
-		public CoderzoneApiQuery(ICountryRepository country)
+		public CoderzoneApiQuery(ICountryRepository country, IProgrammerRepository programmer)
 		{
 			Field<ListGraphType<CountryType>>(
-				"countries",
+				name: "countries",
 				resolve: context => country.GetCountriesAsync()
+				);
+			
+			Field<ListGraphType<ProgrammerType>>(
+				name: "programmers",
+				resolve: context => programmer.GetProgrammersAsync()
+				);
+
+			Field<ProgrammerType>(
+				name: "programmer",
+				arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id" }),
+				resolve: context =>
+					{
+						var programmerId = context.GetArgument<Guid>("id");
+						return programmer.GetProgrammerAsync(programmerId);
+					}
 				);
 		}
 	}
