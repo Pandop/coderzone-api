@@ -46,17 +46,18 @@ namespace CoderzoneGrapQLAPI
 			// Register Profile Repository
 
 			// Register Country Repository
-			services.AddScoped<ICountryRepository, CountryRepository>();
-			//services.AddSingleton<CoderzoneApiQuery>();
+			services.AddScoped<ICountryRepository, CountryRepository>();			
 
 			// Register State Repository
 
 			// Register GraphQL			
 			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+
 			//Register GraphQL resolver
 			services.AddScoped<IDependencyResolver>(
 				provider => new FuncDependencyResolver(provider.GetRequiredService)
 			);
+
 			//Register GraphQL Schema
 			services.AddScoped<CoderzoneApiSchema>();
 
@@ -80,9 +81,7 @@ namespace CoderzoneGrapQLAPI
 
 			// use graphQL passing in the schema
 			app.UseGraphiQl("/graphiql", "/graphql");
-			app.UseGraphQL<CoderzoneApiSchema>("/graphql");
-			//app.UseGraphiQl("/graphiql");
-			//app.UseGraphiQl();
+			app.UseGraphQL<CoderzoneApiSchema>("/graphql");			
 
 			// set up as MVC if necessary
 			app.UseMvc();
