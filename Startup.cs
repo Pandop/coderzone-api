@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using CoderzoneGrapQLAPI.DbSeeds;
 using CoderzoneGrapQLAPI.GraphQL;
 using CoderzoneGrapQLAPI.Services;
+using CoderzoneGrapQLAPI.Api.Middlewares;
 using GraphiQl;
 using GraphQL;
+using GraphQL.Http;
 using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace CoderzoneGrapQLAPI
 {
@@ -58,6 +61,7 @@ namespace CoderzoneGrapQLAPI
 
 			// Register GraphQL			
 			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+			//services.AddSingleton<IDocumentWriter, DocumentWriter>();
 			//Register GraphQL resolver
 			services.AddScoped<IDependencyResolver>(
 				provider => new FuncDependencyResolver(provider.GetRequiredService)
@@ -84,16 +88,20 @@ namespace CoderzoneGrapQLAPI
 			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 			// use graphQL passing in the schema
-			app.UseGraphiQl("/graphiql", "/graphql");
+			app.UseGraphiQl();
 			app.UseGraphQL<CoderzoneApiSchema>("/graphql");
+
+			// Seeding the DB
+			context.SeedDataContext();
+
+			//app.GraphQLMiddleware<CoderzoneApiSchema>();
 			//app.UseGraphiQl("/graphiql");
 			//app.UseGraphiQl();
 
 			// set up as MVC if necessary
-			app.UseMvc();
+			//app.UseMvc();
 
-			// Seeding the DB
-			context.SeedDataContext();
+
 		}
 	}
 }

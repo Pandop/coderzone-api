@@ -13,6 +13,7 @@ namespace CoderzoneGrapQLAPI.GraphQL
 	{
 		public CoderzoneApiQuery(ICountryRepository country, IProgrammerRepository programmer)
 		{
+			Name = "Query";
 			Field<ListGraphType<CountryType>>(
 				name: "countries",
 				resolve: context => country.GetCountriesAsync()
