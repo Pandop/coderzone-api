@@ -84,10 +84,8 @@ namespace CoderzoneGrapQLAPI
 			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 			// use graphQL passing in the schema
-			app.UseGraphiQl("/graphiql", "/graphql");
-			app.UseGraphQL<CoderzoneApiSchema>("/graphql");
-			//app.UseGraphiQl("/graphiql");
-			//app.UseGraphiQl();
+			app.UseGraphiQl();
+			app.UseGraphQL<CoderzoneApiSchema>();
 
 			// set up as MVC if necessary
 			app.UseMvc();
