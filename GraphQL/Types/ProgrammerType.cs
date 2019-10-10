@@ -24,6 +24,10 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 				name: "country",
 				resolve: context => programmer.GetCountryForProgrammerAsync(context.Source.Id)
 			);
+			Field<StateType>(
+				name: "state",
+				resolve: context => programmer.GetStateForProgrammerAsync(context.Source.Id)
+			);
 			Field<ListGraphType<ProjectType>>(
 				name: "projects",
 				resolve: context => programmer.GetAllProjectsByProgrammerAsync(context.Source.Id)

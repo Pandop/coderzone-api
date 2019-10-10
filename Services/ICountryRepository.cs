@@ -8,12 +8,12 @@ namespace CoderzoneGrapQLAPI.Services
 	public interface ICountryRepository
 	{
 		Task<IEnumerable<Country>> GetCountriesAsync();
-		Task<Country> GetCountryAsync(Guid CountryId);
+		Task<Country> GetCountryAsync(Guid countryId);
 		Task<Country> GetCountryOfUserAsync(Guid userId);
 		Task<Country> GetCountryOfStateAsync(Guid stateId);
-		Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid CountryId);
-		Task<IEnumerable<State>> GetStatesForCountryAsync(Guid CountryId);
-		Task<bool> CountryExistsAsync(Guid CountryId);
+		Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid countryId);
+		Task<IEnumerable<State>> GetStatesForCountryAsync(Guid countryId);
+		Task<bool> CountryExistsAsync(Guid countryId);
 		Task<bool> IsDuplicateCountryName(Guid countryId, string countryName);
 	}
 }

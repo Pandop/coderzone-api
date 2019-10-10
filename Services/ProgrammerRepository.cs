@@ -59,6 +59,11 @@ namespace CoderzoneGrapQLAPI.Services
 			return Task.FromResult(_programmerContext.Programmers.AsEnumerable());
 		}
 
+		public Task<State> GetStateForProgrammerAsync(Guid programmerId)
+		{
+			return Task.FromResult(_programmerContext.Programmers.Where(p=> p.Id==programmerId).Select(s=>s.State).FirstOrDefault());
+		}
+
 		public Task<bool> ProgrammerExistsAsync(Guid programmerId)
 		{
 			// bookId is null or empty

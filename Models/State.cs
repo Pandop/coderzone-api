@@ -14,7 +14,7 @@ namespace CoderzoneGrapQLAPI.Models
 		public string Name { get; set; }
 
 		[Display(Name = "Post Code")]
-		[RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid POst Code")]
+		[RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Post Code")]
 		public string PostCode { get; set; }
 
 		public Country Country { get; set; }

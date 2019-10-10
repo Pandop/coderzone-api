@@ -200,6 +200,92 @@ namespace CoderzoneGrapQLAPI.DbSeeds
 										}
 									}
 								}
+							},
+							new State{
+								Name ="NSW",
+								PostCode ="3000",
+								Programmer = new List<Programmer>(){
+									new Programmer
+									{
+										Email = "dd.lutio@kel.com",
+										UserName = "fm-luti@2003",
+										PasswordHash =hasher.HashPassword(null,"user@121"),
+										Profile = new Profile
+										{
+											FirstName = "Fredie",
+											LastName = "Luti",
+											Avatar = "https://img.cinemablend.com/filter:scale/quill/d/e/6/c/9/6/de6c96f1e9871aef148dbc51fb9a5bc90ff25314.jpg?mw=300",
+											Bio = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+											City = "Brisbane",
+											Street = "Tahutimase Street",
+											Number = 112,
+											CreatedAt = DateTime.Now,
+											UpdatedAt = DateTime.Now,
+											DatePublished = new DateTime(2019, 3, 27),
+										},
+										Projects = new List<Project>()
+										{
+											new Project
+											{
+												Name ="Targeted Innovation",
+												ImageUrl ="https://xbsoftware.com/wp-content/uploads/2018/03/why-software-projects-can-take-tonger-than-planned-banner.png",
+												Description="Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+
+											},
+											new Project
+											{
+												Name ="Data Driven Presentation",
+												ImageUrl ="https://www.projectmanager.com/wp-content/uploads/2015/08/award-winning-project-management-software.png",
+												Description="There are many variations of passages of Lorem Ipsum available",
+											},
+											new Project
+											{
+												Name ="Enterprise Integration and Coordination",
+												ImageUrl ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsMIkTmxc_a_L3gcBFVBZfKX8Lacyk0fegAbvXZq1LFs-frj6h",
+												Description="The real value of doing market research became clear when we realised we had missed something",
+											}
+										},
+										WorkExperiences = new List<WorkExperience>()
+										{
+											new WorkExperience
+											{
+												Title="Enterprise Integration and Coordination",
+												Description="For the past several weeks, our designers have been exploring the different directions we could take for the Codebots brand.",
+												StartDate = new DateTime(2019, 4, 12),
+												EndDate = new DateTime(2019, 6, 24)
+											},
+											new WorkExperience
+											{
+												Title="Data Driven Presentation",
+												Description="To test our favourite two logo designs, we surveyed more than 100 designers, developers, business owners, and tech enthusiasts to get their help.",
+												StartDate = new DateTime(2019, 8, 7),
+												EndDate = new DateTime(2019, 9, 3)
+											},
+											new WorkExperience
+											{
+												Title="Targeted Innovation",
+												Description="To test our favourite two logo designs, we surveyed more than 100 designers, developers, business owners, and tech enthusiasts to get their help.",
+												StartDate = new DateTime(2019, 6, 18),
+												EndDate = new DateTime(2019, 10, 7)
+											}
+										},
+										Qualifications = new List<Qualification>()
+										{
+											new Qualification{ Title="BSc of computer science", StartDate=new DateTime(2017,11,7),EndDate=new DateTime(2019,10,7), Description="Completed software development"},
+											new Qualification{Title="Diploma of Agile Management", StartDate=new DateTime(2017,8,7),EndDate=new DateTime(2018,9,7), Description="Completed project management in software development in agile environment"},
+											new Qualification{Title="Advanced Database Design", StartDate=new DateTime(2019,7,7),EndDate=new DateTime(2019,10,5), Description="Completed a certificate of database design using MYSQL"},
+										},
+										Skills = new List<Skill>()
+										{
+											new Skill{Name="Technical design"},
+											new Skill{Name="Cross-tier components implementation"},
+											new Skill{Name="Quality assurance"},
+											new Skill{Name="Capacity and scalability planning"},
+											new Skill{Name="Optimising and performance tuning"}
+										}
+									}
+
+								}
 							}
 						}
 					}
