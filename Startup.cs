@@ -62,7 +62,7 @@ namespace CoderzoneGrapQLAPI
 
 			// Register GraphQL			
 			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-			//services.AddSingleton<IDocumentWriter, DocumentWriter>();
+
 			//Register GraphQL resolver
 			services.AddScoped<IDependencyResolver>(
 				provider => new FuncDependencyResolver(provider.GetRequiredService)
