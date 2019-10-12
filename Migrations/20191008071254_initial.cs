@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CoderzoneGrapQLAPI.Migrations
 {
-    public partial class initials : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,27 +17,6 @@ namespace CoderzoneGrapQLAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Profiles",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(maxLength: 200, nullable: false),
-                    LastName = table.Column<string>(maxLength: 200, nullable: false),
-                    Avatar = table.Column<string>(nullable: true),
-                    Bio = table.Column<string>(maxLength: 2000, nullable: false),
-                    City = table.Column<string>(maxLength: 200, nullable: false),
-                    Street = table.Column<string>(maxLength: 300, nullable: false),
-                    Number = table.Column<int>(nullable: false),
-                    DatePublished = table.Column<DateTime>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Profiles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,8 +59,7 @@ namespace CoderzoneGrapQLAPI.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     StateId = table.Column<Guid>(nullable: true),
-                    CountryId = table.Column<Guid>(nullable: true),
-                    ProfileId = table.Column<Guid>(nullable: true)
+                    CountryId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,17 +71,39 @@ namespace CoderzoneGrapQLAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Programmers_Profiles_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "Profiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Programmers_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Profiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(maxLength: 200, nullable: false),
+                    LastName = table.Column<string>(maxLength: 200, nullable: false),
+                    Avatar = table.Column<string>(nullable: true),
+                    Bio = table.Column<string>(maxLength: 2000, nullable: false),
+                    City = table.Column<string>(maxLength: 200, nullable: false),
+                    Street = table.Column<string>(maxLength: 300, nullable: false),
+                    Number = table.Column<int>(nullable: false),
+                    DatePublished = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    ProgrammerId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profiles_Programmers_ProgrammerId",
+                        column: x => x.ProgrammerId,
+                        principalTable: "Programmers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,14 +191,15 @@ namespace CoderzoneGrapQLAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Profiles_ProgrammerId",
+                table: "Profiles",
+                column: "ProgrammerId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Programmers_CountryId",
                 table: "Programmers",
                 column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Programmers_ProfileId",
-                table: "Programmers",
-                column: "ProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Programmers_StateId",
@@ -234,6 +235,9 @@ namespace CoderzoneGrapQLAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Profiles");
+
+            migrationBuilder.DropTable(
                 name: "Projects");
 
             migrationBuilder.DropTable(
@@ -247,9 +251,6 @@ namespace CoderzoneGrapQLAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Programmers");
-
-            migrationBuilder.DropTable(
-                name: "Profiles");
 
             migrationBuilder.DropTable(
                 name: "States");

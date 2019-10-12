@@ -62,6 +62,8 @@ namespace CoderzoneGrapQLAPI.Migrations
 
                     b.Property<int>("Number");
 
+                    b.Property<Guid>("ProgrammerId");
+
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(300);
@@ -69,6 +71,9 @@ namespace CoderzoneGrapQLAPI.Migrations
                     b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProgrammerId")
+                        .IsUnique();
 
                     b.ToTable("Profiles");
                 });
@@ -102,8 +107,6 @@ namespace CoderzoneGrapQLAPI.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<Guid?>("ProfileId");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<Guid?>("StateId");
@@ -115,8 +118,6 @@ namespace CoderzoneGrapQLAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
-
-                    b.HasIndex("ProfileId");
 
                     b.HasIndex("StateId");
 
@@ -236,15 +237,19 @@ namespace CoderzoneGrapQLAPI.Migrations
                     b.ToTable("WorkExperiences");
                 });
 
+            modelBuilder.Entity("CoderzoneGrapQLAPI.Models.Profile", b =>
+                {
+                    b.HasOne("CoderzoneGrapQLAPI.Models.Programmer", "Programmer")
+                        .WithOne("Profile")
+                        .HasForeignKey("CoderzoneGrapQLAPI.Models.Profile", "ProgrammerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CoderzoneGrapQLAPI.Models.Programmer", b =>
                 {
                     b.HasOne("CoderzoneGrapQLAPI.Models.Country", "Country")
                         .WithMany("Programmers")
                         .HasForeignKey("CountryId");
-
-                    b.HasOne("CoderzoneGrapQLAPI.Models.Profile", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
 
                     b.HasOne("CoderzoneGrapQLAPI.Models.State", "State")
                         .WithMany("Programmer")

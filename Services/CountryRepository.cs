@@ -39,9 +39,9 @@ namespace CoderzoneGrapQLAPI.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<IEnumerable<State>> GetStatesForCountryAsync(Guid CountryId)
+		public Task<IEnumerable<State>> GetStatesForCountryAsync(Guid countryId)
 		{
-			throw new NotImplementedException();
+			return Task.FromResult(_countryContext.States.Where(s=> s.Country.Id==countryId).AsEnumerable());
 		}
 
 		public Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid CountryId)

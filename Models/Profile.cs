@@ -42,7 +42,7 @@ namespace CoderzoneGrapQLAPI.Models
 
 		[DataType(DataType.Date)]
 		public DateTime UpdatedAt { get; set; }
-
-		//public Programmer Programmer { get; set; }
+		public Guid ProgrammerId { get; set; }
+		public Programmer Programmer { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using CoderzoneGrapQLAPI.GraphQL.Types;
 using CoderzoneGrapQLAPI.Services;
+using GraphQL;
 using GraphQL.Types;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace CoderzoneGrapQLAPI.GraphQL
 	{
 		public CoderzoneApiQuery(ICountryRepository country, IProgrammerRepository programmer)
 		{
+			Name = "Query";
 			Field<ListGraphType<CountryType>>(
 				name: "countries",
 				resolve: context => country.GetCountriesAsync()
@@ -27,7 +29,12 @@ namespace CoderzoneGrapQLAPI.GraphQL
 				arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id" }),
 				resolve: context =>
 					{
-						var programmerId = context.GetArgument<Guid>("id");
+						Guid programmerId;
+						if (!Guid.TryParse(context.GetArgument<string>("id"), out programmerId))
+						{
+							context.Errors.Add(new ExecutionError($"Wrong value for guid: {programmerId}"));
+							return null;
+						}
 						return programmer.GetProgrammerAsync(programmerId);
 					}
 				);

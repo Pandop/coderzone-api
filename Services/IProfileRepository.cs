@@ -7,7 +7,7 @@ namespace CoderzoneGrapQLAPI.Services
 {
 	public interface IProfileRepository
 	{
-		Task<Profile> GetProgrammerProfileAsync(Guid profileId);
+		Task<Profile> GetProgrammerProfileAsync(Guid programmerId);
 		Task<IEnumerable<Profile>> GetAllProfilesAsync();
 		Task<bool> ProgrammerProfileExistsAsync(Guid profileId);
 	}
