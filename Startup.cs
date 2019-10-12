@@ -96,10 +96,6 @@ namespace CoderzoneGrapQLAPI
 			// Seeding the DB
 			context.SeedDataContext();
 
-			//app.GraphQLMiddleware<CoderzoneApiSchema>();
-			//app.UseGraphiQl("/graphiql");
-			//app.UseGraphiQl();
-
 			// set up as MVC if necessary
 			//app.UseMvc();
 
