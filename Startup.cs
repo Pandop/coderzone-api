@@ -98,8 +98,6 @@ namespace CoderzoneGrapQLAPI
 
 			// set up as MVC if necessary
 			//app.UseMvc();
-
-
 		}
 	}
 }
