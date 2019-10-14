@@ -13,6 +13,7 @@ namespace CoderzoneGrapQLAPI.GraphQL
 	{
 		public CoderzoneApiQuery(ICountryRepository country, IProgrammerRepository programmer)
 		{
+			Name = "Query";
 			Field<ListGraphType<CountryType>>(
 				name: "countries",
 				resolve: context => country.GetCountriesAsync()
@@ -28,8 +29,7 @@ namespace CoderzoneGrapQLAPI.GraphQL
 				arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id" }),
 				resolve: context =>
 					{
-						Guid programmerId;
-						if (!Guid.TryParse(context.GetArgument<string>("id"), out programmerId))
+						if (!Guid.TryParse(context.GetArgument<string>("id"), out Guid programmerId))
 						{
 							context.Errors.Add(new ExecutionError($"Wrong value for guid: {programmerId}"));
 							return null;

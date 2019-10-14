@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using CoderzoneGrapQLAPI.DbSeeds;
 using CoderzoneGrapQLAPI.GraphQL;
 using CoderzoneGrapQLAPI.Services;
+using CoderzoneGrapQLAPI.Api.Middlewares;
 using GraphiQl;
 using GraphQL;
+using GraphQL.Http;
 using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CoderzoneGrapQLAPI.GraphQL.Types;
 
 namespace CoderzoneGrapQLAPI
 {
@@ -50,20 +53,35 @@ namespace CoderzoneGrapQLAPI
 			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
 			services.AddScoped<IProfileRepository, ProfileRepository>();
 			services.AddScoped<IProjectRepository, ProjectRepository>();
+			//services.AddScoped<IStateRepository, StateRepository>();
 
 			//services.AddSingleton<ICountryRepository, CountryRepository>();
-			//services.AddSingleton<CoderzoneApiQuery>();
+
 
 			// Register State Repository
 
 			// Register GraphQL			
 			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+			services.AddSingleton<CoderzoneApiQuery>();
+			services.AddSingleton<CountryType>();
+			services.AddSingleton<StateType>();
+			services.AddSingleton<ProgrammerType>();
+			services.AddSingleton<ProfileType>();
+			services.AddSingleton<SkillType>();
+			services.AddSingleton<WorkExperienceType>();
+			services.AddSingleton<QualificationType>();
+			services.AddSingleton<ProjectType>();
+			//services.AddSingleton<IDocumentWriter, DocumentWriter>();
 			//Register GraphQL resolver
-			services.AddScoped<IDependencyResolver>(
-				provider => new FuncDependencyResolver(provider.GetRequiredService)
+			//services.AddScoped<IDependencyResolver>(
+			//	provider => new FuncDependencyResolver(provider.GetRequiredService)
+			//);
+			var sp = services.BuildServiceProvider();
+			services.AddSingleton<ISchema>( new CoderzoneApiSchema( new FuncDependencyResolver(type=> sp.GetService(type)))
 			);
 			//Register GraphQL Schema
-			services.AddScoped<CoderzoneApiSchema>();
+			//services.AddScoped<CoderzoneApiSchema>();
+			//services.AddScoped<CoderzoneApiSchema>();
 
 			// expose developmet exceptions
 			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
@@ -85,13 +103,13 @@ namespace CoderzoneGrapQLAPI
 
 			// use graphQL passing in the schema
 			app.UseGraphiQl();
-			app.UseGraphQL<CoderzoneApiSchema>();
+
+			//app.UseGraphQL<CoderzoneApiSchema>();
 
 			// set up as MVC if necessary
 			app.UseMvc();
 
-			// Seeding the DB
-			context.SeedDataContext();
+
 		}
 	}
 }
