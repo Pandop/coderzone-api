@@ -59,6 +59,12 @@ namespace CoderzoneGrapQLAPI.Services
 			return Task.FromResult(_programmerContext.Programmers.AsEnumerable());
 		}
 
+		//public async Task<ILookup<Guid, Project>> GetForProjectsAsync(IList<Guid> projectIds)
+		//{
+		//	var projects = await _programmerContext.Projects.Where(p => projectIds.Contains(p.Programmer.Id)).as();
+		//	return projects.ToLookup(r => r.Programmer.Id).Result;
+		//}
+
 		public Task<State> GetStateForProgrammerAsync(Guid programmerId)
 		{
 			return Task.FromResult(_programmerContext.Programmers.Where(p=> p.Id==programmerId).Select(s=>s.State).FirstOrDefault());

@@ -1,4 +1,5 @@
-﻿using CoderzoneGrapQLAPI.GraphQL.Types;
+﻿using CoderzoneGrapQLAPI.controllers;
+using CoderzoneGrapQLAPI.GraphQL.Types;
 using CoderzoneGrapQLAPI.Services;
 using GraphQL;
 using GraphQL.Types;
@@ -16,7 +17,12 @@ namespace CoderzoneGrapQLAPI.GraphQL
 			Name = "Query";
 			Field<ListGraphType<CountryType>>(
 				name: "countries",
-				resolve: context => country.GetCountriesAsync()
+				resolve: context =>
+				{
+					//var userContext = (CodersGraphQLContext)context.UserContext;
+					//userContext.DbContext
+					return country.GetCountriesAsync();
+				}
 				);
 			
 			Field<ListGraphType<ProgrammerType>>(
@@ -26,16 +32,8 @@ namespace CoderzoneGrapQLAPI.GraphQL
 
 			Field<ProgrammerType>(
 				name: "programmer",
-				arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id" }),
-				resolve: context =>
-					{
-						if (!Guid.TryParse(context.GetArgument<string>("id"), out Guid programmerId))
-						{
-							context.Errors.Add(new ExecutionError($"Wrong value for guid: {programmerId}"));
-							return null;
-						}
-						return programmer.GetProgrammerAsync(programmerId);
-					}
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "id" }),
+				resolve: context => programmer.GetProgrammerAsync(context.GetArgument<Guid>("id"))
 				);
 		}
 	}

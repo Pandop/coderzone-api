@@ -71,22 +71,28 @@ namespace CoderzoneGrapQLAPI
 			services.AddSingleton<WorkExperienceType>();
 			services.AddSingleton<QualificationType>();
 			services.AddSingleton<ProjectType>();
-			//services.AddSingleton<IDocumentWriter, DocumentWriter>();
+
+
+
+
+			// Add GraphQLexpose developmet exceptions
+			services.AddSingleton<IDocumentWriter, DocumentWriter>();
+			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
+					.AddGraphTypes(ServiceLifetime.Singleton)
+					.AddDataLoader();
+
 			//Register GraphQL resolver
 			//services.AddScoped<IDependencyResolver>(
 			//	provider => new FuncDependencyResolver(provider.GetRequiredService)
 			//);
+
 			var sp = services.BuildServiceProvider();
-			services.AddSingleton<ISchema>( new CoderzoneApiSchema( new FuncDependencyResolver(type=> sp.GetService(type)))
-			);
+			services.AddSingleton<ISchema>(new CoderzoneApiSchema(new FuncDependencyResolver(type => sp.GetService(type))));
+			///
+			//services.AddSingleton<ISchema, CoderzoneApiSchema>();
 			//Register GraphQL Schema
 			//services.AddScoped<CoderzoneApiSchema>();
 			//services.AddScoped<CoderzoneApiSchema>();
-
-			// expose developmet exceptions
-			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
-					.AddGraphTypes(ServiceLifetime.Scoped)
-					.AddDataLoader();
 
 		}
 
@@ -105,9 +111,13 @@ namespace CoderzoneGrapQLAPI
 			app.UseGraphiQl();
 
 			//app.UseGraphQL<CoderzoneApiSchema>();
+			//app.GraphQLMiddleware<CoderzoneApiSchema>();
 
 			// set up as MVC if necessary
 			app.UseMvc();
+
+			// Seed the database
+			context.SeedDataContext();
 
 
 		}

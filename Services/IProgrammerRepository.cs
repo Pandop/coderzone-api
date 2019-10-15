@@ -18,6 +18,8 @@ namespace CoderzoneGrapQLAPI.Services
 		Task<IEnumerable<Qualification>> GetAllQualificationsByProgrammerAsync(Guid programmerId);
 		
 		Task<bool> ProgrammerExistsAsync(Guid programmerId);
+
+		//Task<ILookup<Guid, Project>> GetForProjectsAsync(IEnumerable<Guid> projectIds);
 		
 	}
 }

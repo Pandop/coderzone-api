@@ -11,9 +11,11 @@ namespace CoderzoneGrapQLAPI.GraphQL
 	{
 		public CoderzoneApiSchema(IDependencyResolver resolver) : base(resolver)
 		{
+			// Query
 			Query = resolver.Resolve<CoderzoneApiQuery>();
 
 			// Mutation
+			//Mutation = resolver.Resolve<CoderzoneApiMutation>();
 
 			// Subscription
 		}
