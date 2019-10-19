@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoderzoneGrapQLAPI.DbSeeds;
+using CoderzoneGrapQLAPI.Api.DbSeeds;
 using CoderzoneGrapQLAPI.GraphQL;
 using CoderzoneGrapQLAPI.Services;
 using CoderzoneGrapQLAPI.Api.Middlewares;

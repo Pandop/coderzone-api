@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoderzoneGrapQLAPI.DbSeeds
+namespace CoderzoneGrapQLAPI.Api.DbSeeds
 {
 	public static class DbSeeding
 	{
