@@ -1,6 +1,7 @@
 ﻿using CoderzoneGrapQLAPI.Models;
 using CoderzoneGrapQLAPI.Services;
 using GraphQL;
+using GraphQL.DataLoader;
 using GraphQL.EntityFramework;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +24,14 @@ namespace CoderzoneGrapQLAPI.controllers
 		private readonly ISchema _schema;
 		private readonly CoderzoneApiDbContext dbContext;
 		private readonly IDocumentExecuter _documentExecuter;
+		private readonly DataLoaderDocumentListener _dataLoaderListener;
 
-		public GraphQLController(IDocumentExecuter documentExecuter, ISchema schema, CoderzoneApiDbContext dbContext)
+		public GraphQLController(IDocumentExecuter documentExecuter, ISchema schema, CoderzoneApiDbContext dbContext, DataLoaderDocumentListener dataLoaderListener)
 		{
 			_schema = schema;
 			this.dbContext = dbContext;
 			_documentExecuter = documentExecuter;
+			_dataLoaderListener = dataLoaderListener;
 		}
 		
 		[HttpPost]
@@ -49,6 +52,7 @@ namespace CoderzoneGrapQLAPI.controllers
 				}
 			};
 
+			executionOptions.Listeners.Add(_dataLoaderListener);
 			// prepare the query for sending back to client
 			var result = await _documentExecuter.ExecuteAsync(executionOptions);
 
