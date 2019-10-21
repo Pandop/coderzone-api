@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoderzoneGrapQLAPI.Services
@@ -18,8 +19,9 @@ namespace CoderzoneGrapQLAPI.Services
 		Task<IEnumerable<Qualification>> GetAllQualificationsByProgrammerAsync(Guid programmerId);
 		
 		Task<bool> ProgrammerExistsAsync(Guid programmerId);
+		Task<ILookup<Guid, Project>> GetAllProjectsAsync(IEnumerable<Guid> programmerId);
+		Task<IDictionary<Guid, Project>> GetProjectsAsync(IEnumerable<Guid> programmerId, CancellationToken token);
 
-		//Task<ILookup<Guid, Project>> GetForProjectsAsync(IEnumerable<Guid> projectIds);
-		
+
 	}
 }

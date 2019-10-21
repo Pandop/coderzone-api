@@ -36,8 +36,11 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 				name: "projects",
 				resolve: context =>
 				{
-					//var loader = dataLoaderAccessor.Context.GetOrAddCollectionBatchLoader<Guid, ProjectType>("GetForProjectsAsync", programmer.GetForProjectsAsync);
-					return programmer.GetAllProjectsByProgrammerAsync(context.Source.Id);
+					var loader = dataLoaderAccessor.Context.GetOrAddCollectionBatchLoader<Guid, Project>("GetAllProjectsAsync",programmer.GetAllProjectsAsync);
+					//var loader = dataLoaderAccessor.Context.GetOrAddBatchLoader<Guid, Project>("GetProjectsAsync", programmer.GetProjectsAsync);
+					//return programmer.GetAllProjectsByProgrammerAsync(context.Source.Id);
+					//return loader.LoadAsync(context.Source.Id);
+					return loader.LoadAsync(context.Source.Id);
 				}
 
 			);

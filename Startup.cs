@@ -18,6 +18,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CoderzoneGrapQLAPI.GraphQL.Types;
+using GraphQL.DataLoader;
+using GraphQL.Execution;
 
 namespace CoderzoneGrapQLAPI
 {
@@ -77,7 +79,12 @@ namespace CoderzoneGrapQLAPI
 
 			// Add GraphQLexpose developmet exceptions
 			services.AddSingleton<IDocumentWriter, DocumentWriter>();
-			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
+			//services.AddSingleton<IDataLoaderContextAccessor, DataLoaderContextAccessor>();
+			services.AddSingleton<IDataLoaderContextAccessor>(new DataLoaderContextAccessor());
+			//services.AddSingleton<IDocumentExecutionListener, DataLoaderDocumentListener>();
+			services.AddSingleton<DataLoaderDocumentListener>();
+
+			services.AddGraphQL(o => { o.EnableMetrics = true; o.ExposeExceptions = _env.IsDevelopment(); })
 					.AddGraphTypes(ServiceLifetime.Singleton)
 					.AddDataLoader();
 
