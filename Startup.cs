@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoderzoneGrapQLAPI.DbSeeds;
+using CoderzoneGrapQLAPI.Api.DbSeeds;
 using CoderzoneGrapQLAPI.GraphQL;
 using CoderzoneGrapQLAPI.Services;
 using CoderzoneGrapQLAPI.Api.Middlewares;
@@ -62,7 +62,7 @@ namespace CoderzoneGrapQLAPI
 
 			// Register GraphQL			
 			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-			//services.AddSingleton<IDocumentWriter, DocumentWriter>();
+
 			//Register GraphQL resolver
 			services.AddScoped<IDependencyResolver>(
 				provider => new FuncDependencyResolver(provider.GetRequiredService)
@@ -96,14 +96,8 @@ namespace CoderzoneGrapQLAPI
 			// Seeding the DB
 			context.SeedDataContext();
 
-			//app.GraphQLMiddleware<CoderzoneApiSchema>();
-			//app.UseGraphiQl("/graphiql");
-			//app.UseGraphiQl();
-
 			// set up as MVC if necessary
 			//app.UseMvc();
-
-
 		}
 	}
 }
