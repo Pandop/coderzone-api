@@ -72,9 +72,6 @@ namespace CoderzoneGrapQLAPI
 			services.AddSingleton<QualificationType>();
 			services.AddSingleton<ProjectType>();
 
-
-
-
 			// Add GraphQLexpose developmet exceptions
 			services.AddSingleton<IDocumentWriter, DocumentWriter>();
 			services.AddGraphQL(o => { o.ExposeExceptions = _env.IsDevelopment(); })
