@@ -19,25 +19,25 @@ namespace CoderzoneGrapQLAPI.Services
 		public Task<IEnumerable<Project>> GetAllProjectsByProgrammerAsync(Guid programmerId)
 		{
 			// Fetch all Projects from programmer
-			return Task.FromResult(_programmerContext.Projects.Where(p => p.Programmer.Id == programmerId).AsEnumerable());
+			return Task.FromResult(_programmerContext.Projects.Where(p => p.Profile.Id == programmerId).AsEnumerable());
 		}
 
 		public Task<IEnumerable<Qualification>> GetAllQualificationsByProgrammerAsync(Guid programmerId)
 		{
 			// Fetch all Qualification from programmer
-			return Task.FromResult(_programmerContext.Qualifications.Where(q => q.Programmer.Id == programmerId).AsEnumerable());
+			return Task.FromResult(_programmerContext.Qualifications.Where(q => q.Profile.Id == programmerId).AsEnumerable());
 		}
 
 		public Task<IEnumerable<Skill>> GetAllSkillsByProgrammerAsync(Guid programmerId)
 		{
 			// Fetch all Qualification from programmer
-			return Task.FromResult(_programmerContext.Skills.Where(q => q.Programmer.Id == programmerId).AsEnumerable());
+			return Task.FromResult(_programmerContext.Skills.Where(q => q.Profile.Id == programmerId).AsEnumerable());
 		}
 
 		public Task<IEnumerable<WorkExperience>> GetAllWorkExperiencesByProgrammerAsync(Guid programmerId)
 		{
 			// Fetch all Work Experience from programmer
-			return Task.FromResult(_programmerContext.WorkExperiences.Where(w => w.Programmer.Id == programmerId).AsEnumerable());
+			return Task.FromResult(_programmerContext.WorkExperiences.Where(w => w.Profile.Id == programmerId).AsEnumerable());
 		}
 
 		public Task<Country> GetCountryForProgrammerAsync(Guid programmerId)
@@ -62,18 +62,18 @@ namespace CoderzoneGrapQLAPI.Services
 
 		public Task<ILookup<Guid, Project>> GetAllProjectsAsync(IEnumerable<Guid> programmerId)
 		{
-			var reviews = _programmerContext.Projects.Where(p => programmerId.Contains(p.Programmer.Id)).ToLookup(r => r.Id);
+			var reviews = _programmerContext.Projects.Where(p => programmerId.Contains(p.Profile.Id)).ToLookup(r => r.Id);
 
-			var projects = _programmerContext.Projects.Where(p => programmerId.Contains(p.Programmer.Id)).ToLookup(r => r.Programmer.Id);
+			var projects = _programmerContext.Projects.Where(p => programmerId.Contains(p.Profile.Id)).ToLookup(r => r.Profile.Id);
 			//return Task.FromResult(_programmerContext.Projects.Where(p => programmerId.Contains(p.Programmer.Id)).ToLookup(r => r.Programmer.Id));
 			return Task.FromResult(projects);
 		}
 
 		public async Task<IDictionary<Guid, Project>> GetProjectsAsync(IEnumerable<Guid> programmerId, CancellationToken token)
 		{
-			var reviews =  _programmerContext.Projects.Where(p =>  programmerId.Contains(p.Programmer.Id)).ToDictionary(x => x);
+			var reviews =  _programmerContext.Projects.Where(p =>  programmerId.Contains(p.Profile.Id)).ToDictionary(x => x);
 			//return await Task.FromResult<Dictionary<Guid, Project>>(reviews);
-			var taskResults = await Task.FromResult<IDictionary<Guid, Project>>(_programmerContext.Projects.Where(p => programmerId.Contains(p.Programmer.Id)).ToDictionary(p=>p.Id));
+			var taskResults = await Task.FromResult<IDictionary<Guid, Project>>(_programmerContext.Projects.Where(p => programmerId.Contains(p.Profile.Id)).ToDictionary(p=>p.Id));
 
 			return taskResults; // Task.FromResult(taskResults);
 		}

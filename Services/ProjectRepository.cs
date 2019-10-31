@@ -23,8 +23,8 @@ namespace CoderzoneGrapQLAPI.Services
 
 		public async Task<ILookup<Guid, Project>> GetProjectsAsync(IEnumerable<Guid> programmerId)
 		{
-			var reviews = _projectContext.Projects.Where(a => programmerId.Contains(a.Programmer.Id)).ToAsyncEnumerable();
-			return await reviews.ToLookup(r => r.Programmer.Id);
+			var reviews = _projectContext.Projects.Where(a => programmerId.Contains(a.Profile.Id)).ToAsyncEnumerable();
+			return await reviews.ToLookup(r => r.Profile.Id);
 		}
 	}
 }

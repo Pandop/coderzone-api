@@ -15,6 +15,7 @@ namespace CoderzoneGrapQLAPI.Models
 		[StringLength(200, MinimumLength = 5, ErrorMessage = "Skill must be between 5 and 200 characters")]
 		public string Name { get; set; }
 
-		public Programmer Programmer { get; set; }
+		//public Programmer Programmer { get; set; }
+		public Profile Profile { get; set; }
 	}
 }
