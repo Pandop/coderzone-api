@@ -32,34 +32,6 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 				name: "state",
 				resolve: context => programmer.GetStateForProgrammerAsync(context.Source.Id)
 			);
-			Field<ListGraphType<ProjectType>>(
-				name: "projects",
-				resolve: context =>
-				{
-					var loader = dataLoaderAccessor.Context.GetOrAddCollectionBatchLoader<Guid, Project>("GetAllProjectsAsync",programmer.GetAllProjectsAsync);
-					//var loader = dataLoaderAccessor.Context.GetOrAddBatchLoader<Guid, Project>("GetProjectsAsync", programmer.GetProjectsAsync);
-					//return programmer.GetAllProjectsByProgrammerAsync(context.Source.Id);
-					//return loader.LoadAsync(context.Source.Id);
-					return loader.LoadAsync(context.Source.Id);
-				}
-
-			);
-			Field<ListGraphType<WorkExperienceType>>(
-				name: "works",
-				resolve: context => programmer.GetAllWorkExperiencesByProgrammerAsync(context.Source.Id)
-
-			);
-			Field<ListGraphType<QualificationType>>(
-				name: "qualifications",
-				resolve: context => programmer.GetAllQualificationsByProgrammerAsync(context.Source.Id)
-
-			);
-			Field<ListGraphType<SkillType>>(
-				name: "skills",
-				resolve: context => programmer.GetAllSkillsByProgrammerAsync(context.Source.Id)
-
-			);
 		}
-
 	}
 }
