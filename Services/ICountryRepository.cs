@@ -15,12 +15,12 @@ namespace CoderzoneGrapQLAPI.Services
 		Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid countryId);
 		Task<IEnumerable<State>> GetStatesForCountryAsync(Guid countryId);
 		Task<bool> CountryExistsAsync(Guid countryId);
-		Task<bool> IsDuplicateCountryName(Guid countryId, string countryName);
+		Task<bool> IsDuplicateCountryNameAsync(Guid countryId, string countryName);
 
 		// CREATE | UPDATE | DELETE OPERATIONS
-		Task<bool> AddCountry(Country country);
-		Task<bool> UpdateCountry(Country country);
-		Task<bool> DeleteCountry(Country country);
-		Task<bool> Save();
+		Task<bool> AddCountryAsync(Country country);
+		Task<bool> UpdateCountryAsync(Country country);
+		Task<bool> DeleteCountryAsync(Country country);
+		Task<bool> SaveAsync();
 	}
 }

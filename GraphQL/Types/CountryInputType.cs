@@ -11,6 +11,7 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 		public CountryInputType()
 		{
 			Name = "CountryInputType";
+			Field<IdGraphType>("Id");
 			Field<NonNullGraphType<StringGraphType>>("name");
 		}
 	}

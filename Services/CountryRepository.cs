@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoderzoneGrapQLAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoderzoneGrapQLAPI.Services
 {
@@ -55,41 +56,41 @@ namespace CoderzoneGrapQLAPI.Services
 			if (countryId == Guid.Empty)
 				throw new ArgumentNullException(nameof(countryId));
 
-			return Task.FromResult(_countryContext.Profiles.Any(a => a.Id == countryId));
+			return Task.FromResult(_countryContext.Countries.Any(c => c.Id == countryId));
 		}
 
-		public Task<bool> IsDuplicateCountryName(Guid countryId, string countryName)
+		public Task<bool> IsDuplicateCountryNameAsync(Guid countryId, string countryName)
 		{
 			// countryId is null or empty
 			if (countryId == Guid.Empty)
 				throw new ArgumentNullException(nameof(countryId));
 
-			return Task.FromResult(_countryContext.Countries.Any(c => c.Name.ToLower() == countryName.ToLower() && c.Id!=countryId));
+			return Task.FromResult(_countryContext.Countries.Any(c => c.Name.Equals(countryName) && c.Id == countryId));
 		}
 
 
 		// CREATE | UPDATE | DELETE OPERATIONS
-		public Task<bool> AddCountry(Country country)
+		public Task<bool> AddCountryAsync(Country country)
 		{
 			// Add country Object to country context and save it
 			_countryContext.Add(country);
-			return Save();
+			return SaveAsync();
 		}
 
-		public Task<bool> UpdateCountry(Country country)
+		public Task<bool> UpdateCountryAsync(Country country)
 		{
 			// Update country Object to country context and save it
 			_countryContext.Update(country);
-			return Save();
+			return SaveAsync();
 		}
 
-		public Task<bool> DeleteCountry(Country country)
+		public Task<bool> DeleteCountryAsync(Country country)
 		{
 			// Remove country Object to country context and save it
-			_countryContext.Remove(country);
-			return Save();
+			_countryContext.Remove(country).State = EntityState.Modified;
+			return SaveAsync();
 		}
 
-		public Task<bool> Save() => Task.FromResult(_countryContext.SaveChanges() >= 0 ? true : false);
+		public Task<bool> SaveAsync() => Task.FromResult(_countryContext.SaveChanges() >= 0 ? true : false);
 	}
 }
