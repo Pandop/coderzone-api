@@ -1,4 +1,5 @@
-﻿using GraphQL;
+﻿using CoderzoneGrapQLAPI.GraphQL.Mutations;
+using GraphQL;
 using GraphQL.Types;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace CoderzoneGrapQLAPI.GraphQL
 			Query = resolver.Resolve<CoderzoneApiQuery>();
 
 			// Mutation
-			//Mutation = resolver.Resolve<CoderzoneApiMutation>();
+			Mutation = resolver.Resolve<CoderzoneApiMutation>();
 
 			// Subscription
 		}

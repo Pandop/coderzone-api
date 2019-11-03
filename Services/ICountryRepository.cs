@@ -7,6 +7,7 @@ namespace CoderzoneGrapQLAPI.Services
 {
 	public interface ICountryRepository
 	{
+		// READ OPERATIONS
 		Task<IEnumerable<Country>> GetCountriesAsync();
 		Task<Country> GetCountryAsync(Guid countryId);
 		Task<Country> GetCountryOfUserAsync(Guid userId);
@@ -15,5 +16,11 @@ namespace CoderzoneGrapQLAPI.Services
 		Task<IEnumerable<State>> GetStatesForCountryAsync(Guid countryId);
 		Task<bool> CountryExistsAsync(Guid countryId);
 		Task<bool> IsDuplicateCountryName(Guid countryId, string countryName);
+
+		// CREATE | UPDATE | DELETE OPERATIONS
+		Task<bool> AddCountry(Country country);
+		Task<bool> UpdateCountry(Country country);
+		Task<bool> DeleteCountry(Country country);
+		Task<bool> Save();
 	}
 }

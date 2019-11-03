@@ -37,7 +37,10 @@ namespace CoderzoneGrapQLAPI.controllers
 		[HttpPost]
 		public async Task<ExecutionResult> Post([FromBody] GraphQLQueryType query)
 		{			
-			if (query == null) throw new ArgumentNullException(nameof(query));
+			if (!ModelState.IsValid || query == null)
+			{
+				throw new ArgumentNullException(nameof(query));
+			}
 	
 			// construct query
 			var executionOptions = new ExecutionOptions
@@ -46,11 +49,13 @@ namespace CoderzoneGrapQLAPI.controllers
 				Query = query.Query,
 				OperationName = query.OperationName,
 				Inputs = query.Variables?.ToInputs(),
-				UserContext = new CodersGraphQLContext
-				{
-					DbContext = dbContext
-				}
-			};
+				ExposeExceptions = true,
+				EnableMetrics = true
+			//UserContext = new CodersGraphQLContext
+			//{
+			//	DbContext = dbContext
+			//}
+		};
 
 			executionOptions.Listeners.Add(_dataLoaderListener);
 			// prepare the query for sending back to client

@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CoderzoneGrapQLAPI.GraphQL.Types;
 using GraphQL.DataLoader;
 using GraphQL.Execution;
+using CoderzoneGrapQLAPI.GraphQL.Mutations;
 
 namespace CoderzoneGrapQLAPI
 {
@@ -66,7 +67,9 @@ namespace CoderzoneGrapQLAPI
 			// Register GraphQL			
 			services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
 			services.AddSingleton<CoderzoneApiQuery>();
+			services.AddSingleton<CoderzoneApiMutation>();
 			services.AddSingleton<CountryType>();
+			services.AddSingleton<CountryInputType>();
 			services.AddSingleton<StateType>();
 			services.AddSingleton<ProgrammerType>();
 			services.AddSingleton<ProfileType>();
@@ -76,7 +79,7 @@ namespace CoderzoneGrapQLAPI
 			services.AddSingleton<ProjectType>();
 
 			// Add GraphQLexpose developmet exceptions
-			services.AddSingleton<IDocumentWriter, DocumentWriter>();
+			//services.AddSingleton<IDocumentWriter, DocumentWriter>();
 			//services.AddSingleton<IDataLoaderContextAccessor, DataLoaderContextAccessor>();
 			services.AddSingleton<IDataLoaderContextAccessor>(new DataLoaderContextAccessor());
 			//services.AddSingleton<IDocumentExecutionListener, DataLoaderDocumentListener>();
