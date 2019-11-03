@@ -1,4 +1,6 @@
 ﻿using CoderzoneGrapQLAPI.Models;
+using CoderzoneGrapQLAPI.Services;
+using GraphQL.DataLoader;
 using GraphQL.Types;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 {
 	public class ProfileType : ObjectGraphType<Profile>
 	{
-		public ProfileType()
+		public ProfileType(IProfileRepository profile,IProjectRepository project, IProgrammerRepository _programmer,	IDataLoaderContextAccessor dataLoaderAccessor)
 		{
 			Field(t=> t.Id, type: typeof(IdGraphType)).Description("User Profile Id");
 			Field(t => t.FirstName);
@@ -23,6 +25,33 @@ namespace CoderzoneGrapQLAPI.GraphQL.Types
 			Field(t => t.UpdatedAt);
 			Field(t => t.ProgrammerId, type: typeof(IdGraphType));
 			Field(t => t.DatePublished);
+
+			Field<ListGraphType<ProjectType>>(
+				name: "projects",
+				resolve: context =>
+				{
+					var loader = dataLoaderAccessor.Context.GetOrAddCollectionBatchLoader<Guid, Project>("GetAllProjectsAsync", profile.GetAllProjectsAsync);
+					//var loader = dataLoaderAccessor.Context.GetOrAddBatchLoader<Guid, Project>("GetProjectsAsync", programmer.GetProjectsAsync);
+					//return programmer.GetAllProjectsByProgrammerAsync(context.Source.Id);
+					//return loader.LoadAsync(context.Source.Id);
+					return loader.LoadAsync(context.Source.Id);
+				}
+
+			);
+			Field<ListGraphType<WorkExperienceType>>(
+				name: "works",
+				resolve: context => profile.GetAllWorkExperiencesByProgrammerAsync(context.Source.Id)
+
+			);
+			Field<ListGraphType<QualificationType>>(
+				name: "qualifications",
+				resolve: context => profile.GetAllQualificationsByProgrammerAsync(context.Source.Id)
+
+			);
+			Field<ListGraphType<SkillType>>(
+				name: "skills",
+				resolve: context => profile.GetAllSkillsByProgrammerAsync(context.Source.Id)
+			);
 		}
 	}
 }

@@ -9,5 +9,6 @@ namespace CoderzoneGrapQLAPI.Services
 	public interface IProjectRepository
 	{
 		Task<IEnumerable<Project>> GetAllProjectsAsync();
+		Task<ILookup<Guid, Project>> GetProjectsAsync(IEnumerable<Guid> programmerId);
 	}
 }

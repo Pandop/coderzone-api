@@ -16,10 +16,10 @@ namespace CoderzoneGrapQLAPI.Models
 		public State State { get; set; }
 		public Country Country { get; set; }
 		public Profile Profile { get; set; }
-		public virtual ICollection<Project> Projects { get; set; }
-		public virtual ICollection<WorkExperience> WorkExperiences { get; set; }
-		public virtual ICollection<Qualification> Qualifications { get; set; }
-		public virtual ICollection<Skill> Skills { get; set; }
+		//public virtual ICollection<Project> Projects { get; set; }
+		//public virtual ICollection<WorkExperience> WorkExperiences { get; set; }
+		//public virtual ICollection<Qualification> Qualifications { get; set; }
+		//public virtual ICollection<Skill> Skills { get; set; }
 		//public virtual ICollection<ProgrammerCategory> ProgrammerCategories { get; set; }
 		//Add
 	}

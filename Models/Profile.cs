@@ -44,5 +44,10 @@ namespace CoderzoneGrapQLAPI.Models
 		public DateTime UpdatedAt { get; set; }
 		public Guid ProgrammerId { get; set; }
 		public Programmer Programmer { get; set; }
+
+		public virtual ICollection<Project> Projects { get; set; }
+		public virtual ICollection<WorkExperience> WorkExperiences { get; set; }
+		public virtual ICollection<Qualification> Qualifications { get; set; }
+		public virtual ICollection<Skill> Skills { get; set; }
 	}
 }

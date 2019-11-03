@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoderzoneGrapQLAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoderzoneGrapQLAPI.Services
 {
@@ -14,19 +15,19 @@ namespace CoderzoneGrapQLAPI.Services
 		{
 			_countryContext = countryContext;
 		}
-		public Task<bool> CountryExistsAsync(Guid CountryId)
-		{
-			throw new NotImplementedException();
-		}
 
+		// READ OPERATIONS
 		public Task<IEnumerable<Country>> GetCountriesAsync()
 		{
 			return Task.FromResult(_countryContext.Countries.AsEnumerable());
 		}
 
-		public Task<Country> GetCountryAsync(Guid CountryId)
+		public Task<Country> GetCountryAsync(Guid countryId)
 		{
-			throw new NotImplementedException();
+			if(countryId ==Guid.Empty)
+				throw new ArgumentNullException(nameof(countryId));
+
+			return Task.FromResult(_countryContext.Countries.FirstOrDefault(c => c.Id == countryId));
 		}
 
 		public Task<Country> GetCountryOfStateAsync(Guid stateId)
@@ -44,14 +45,52 @@ namespace CoderzoneGrapQLAPI.Services
 			return Task.FromResult(_countryContext.States.Where(s=> s.Country.Id==countryId).AsEnumerable());
 		}
 
-		public Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid CountryId)
+		public Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid countryId)
 		{
-			throw new NotImplementedException();
+			return Task.FromResult(_countryContext.Programmers.Where(c => c.Country.Id== countryId).AsEnumerable());
 		}
 
-		public Task<bool> IsDuplicateCountryName(Guid countryId, string countryName)
+		public Task<bool> CountryExistsAsync(Guid countryId)
 		{
-			throw new NotImplementedException();
+			// countryId is null or empty
+			if (countryId == Guid.Empty)
+				throw new ArgumentNullException(nameof(countryId));
+
+			return Task.FromResult(_countryContext.Countries.Any(c => c.Id == countryId));
 		}
+
+		public Task<bool> IsDuplicateCountryNameAsync(Guid countryId, string countryName)
+		{
+			// countryId is null or empty
+			if (countryId == Guid.Empty)
+				throw new ArgumentNullException(nameof(countryId));
+
+			return Task.FromResult(_countryContext.Countries.Any(c => c.Name.Equals(countryName) && c.Id == countryId));
+		}
+
+
+		// CREATE | UPDATE | DELETE OPERATIONS
+		public Task<bool> AddCountryAsync(Country country)
+		{
+			// Add country Object to country context and save it
+			_countryContext.Add(country);
+			return SaveAsync();
+		}
+
+		public Task<bool> UpdateCountryAsync(Country country)
+		{
+			// Update country Object to country context and save it
+			_countryContext.Update(country);
+			return SaveAsync();
+		}
+
+		public Task<bool> DeleteCountryAsync(Country country)
+		{
+			// Remove country Object to country context and save it
+			_countryContext.Remove(country).State = EntityState.Modified;
+			return SaveAsync();
+		}
+
+		public Task<bool> SaveAsync() => Task.FromResult(_countryContext.SaveChanges() >= 0 ? true : false);
 	}
 }

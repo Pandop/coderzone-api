@@ -20,7 +20,8 @@ namespace CoderzoneGrapQLAPI.Models
 		public string Description { get; set; }
 
 		public string ImageUrl { get; set; }
-		public Programmer Programmer { get; set; }
+		//public Programmer Programmer { get; set; }
+		public Profile Profile { get; set; }
 		//public string[] TechStacks { get; set; }
 	}
 }
