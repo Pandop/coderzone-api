@@ -51,7 +51,7 @@ namespace CoderzoneGrapQLAPI.Api.Middlewares
 		public async Task InvokeAsync(HttpContext context)
 		{
 			// Method is not "POST" & path is not "/graphql"
-			if(!context.Request.Method.ToLower().Equals("post") && context.Request.Path.Equals("/graphql"))
+			if(!context.Request.Method.ToLower().Equals("post") && !context.Request.Path.Equals("/graphql"))
 			{
 				await _next(context);
 				return;

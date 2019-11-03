@@ -11,6 +11,7 @@ namespace CoderzoneGrapQLAPI.Models
 		[Key]
 		public Guid Id { get; set; }
 		//public Programmer Programmer { get; set; }
+		//public Profile Profile { get; set; }
 		public string Description { get; set; }
 	}
 }

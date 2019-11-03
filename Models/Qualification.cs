@@ -26,6 +26,7 @@ namespace CoderzoneGrapQLAPI.Models
 		[DataType(DataType.Date)]
 		public DateTime EndDate { get; set; }
 
-		public Programmer Programmer { get; set; }
+		//public Programmer Programmer { get; set; }
+		public Profile Profile { get; set; }
 	}
 }
