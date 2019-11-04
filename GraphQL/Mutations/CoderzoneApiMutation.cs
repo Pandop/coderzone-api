@@ -22,7 +22,7 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 				{
 					var countryToCreate = context.GetArgument<Country>("country");
 					// Make sure country is not already in the database
-					var countryInDb = countryRepository.GetCountriesAsync().Result.FirstOrDefault(c=> c.Name.ToLower()== countryToCreate.Name.ToLower());
+					var countryInDb = countryRepository.GetCountriesAsync().Result.FirstOrDefault(c=> string.Equals(c.Name, countryToCreate.Name, StringComparison.OrdinalIgnoreCase));
 					if(countryInDb !=null)
 					{
 						context.Errors.Add(new ExecutionError($"The Country '{countryToCreate.Name}' already exists!"));
