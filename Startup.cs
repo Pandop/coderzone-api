@@ -52,7 +52,7 @@ namespace CoderzoneGrapQLAPI
 			// Register Profile Repository
 
 			// Register Country Repository
-			services.AddScoped<ICountryRepository, CountryRepository>();			
+			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
 			services.AddScoped<IProfileRepository, ProfileRepository>();

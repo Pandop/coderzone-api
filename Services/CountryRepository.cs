@@ -50,22 +50,24 @@ namespace CoderzoneGrapQLAPI.Services
 			return Task.FromResult(_countryContext.Programmers.Where(c => c.Country.Id== countryId).AsEnumerable());
 		}
 
-		public Task<bool> CountryExistsAsync(Guid countryId)
+		public async Task<bool> CountryExistsAsync(Guid countryId)
 		{
 			// countryId is null or empty
 			if (countryId == Guid.Empty)
 				throw new ArgumentNullException(nameof(countryId));
 
-			return Task.FromResult(_countryContext.Countries.Any(c => c.Id == countryId));
+			return await _countryContext.Countries.AsNoTracking().AnyAsync(c => c.Id == countryId);
 		}
 
-		public Task<bool> IsDuplicateCountryNameAsync(Guid countryId, string countryName)
+		public async Task<bool> IsDuplicateCountryNameAsync(Guid countryId, string countryName)
 		{
 			// countryId is null or empty
 			if (countryId == Guid.Empty)
 				throw new ArgumentNullException(nameof(countryId));
 
-			return Task.FromResult(_countryContext.Countries.Any(c => c.Name.Equals(countryName) && c.Id == countryId));
+			return await _countryContext.Countries
+				.AsNoTracking()
+				.AnyAsync(c => c.Name.Equals(countryName) && c.Id == countryId);
 		}
 
 
