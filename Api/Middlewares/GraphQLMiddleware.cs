@@ -51,7 +51,7 @@ namespace CoderzoneGrapQLAPI.Api.Middlewares
 		public async Task InvokeAsync(HttpContext context)
 		{
 			// Method is not "POST" & path is not "/graphql"
-			if(!context.Request.Method.ToLower().Equals("post") && !context.Request.Path.Equals("/graphql"))
+			if(!context.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase) && !context.Request.Path.Equals("/graphql"))
 			{
 				await _next(context);
 				return;
@@ -66,7 +66,7 @@ namespace CoderzoneGrapQLAPI.Api.Middlewares
 			});
 			context.Response.ContentType = "application/json";
 			context.Response.StatusCode = (int)(result.Errors?.Any() == true ? HttpStatusCode.BadRequest : HttpStatusCode.OK);
-			await context.Response.WriteAsync(_writer.Write(result));
+			//await context.Response.WriteAsync(_writer.Write(result));
 			//await context.Response.WriteAsync(_writer.Write(result));
 		}
 
