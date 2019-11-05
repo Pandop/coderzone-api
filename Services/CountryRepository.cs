@@ -56,7 +56,7 @@ namespace CoderzoneGrapQLAPI.Services
 			if (countryId == Guid.Empty)
 				throw new ArgumentNullException(nameof(countryId));
 
-			return await _countryContext.Countries.AsNoTracking().AnyAsync(c => c.Id == countryId);
+			return await _countryContext.Countries.AnyAsync(c => c.Id == countryId);
 		}
 
 		public async Task<bool> IsDuplicateCountryNameAsync(Guid countryId, string countryName)
@@ -65,18 +65,16 @@ namespace CoderzoneGrapQLAPI.Services
 			if (countryId == Guid.Empty)
 				throw new ArgumentNullException(nameof(countryId));
 
-			return await _countryContext.Countries
-				.AsNoTracking()
-				.AnyAsync(c => c.Name.Equals(countryName) && c.Id == countryId);
+			return await _countryContext.Countries.AnyAsync(c => c.Name.Equals(countryName) && c.Id == countryId);
 		}
 
 
 		// CREATE | UPDATE | DELETE OPERATIONS
-		public Task<bool> AddCountryAsync(Country country)
+		public async Task<bool> AddCountryAsync(Country country)
 		{
 			// Add country Object to country context and save it
 			_countryContext.Add(country);
-			return SaveAsync();
+			return await SaveAsync();
 		}
 
 		public Task<bool> UpdateCountryAsync(Country country)
@@ -86,13 +84,13 @@ namespace CoderzoneGrapQLAPI.Services
 			return SaveAsync();
 		}
 
-		public Task<bool> DeleteCountryAsync(Country country)
+		public async Task<bool> DeleteCountryAsync(Country country)
 		{
 			// Remove country Object to country context and save it
 			_countryContext.Remove(country).State = EntityState.Modified;
-			return SaveAsync();
+			return await SaveAsync();
 		}
 
-		public Task<bool> SaveAsync() => Task.FromResult(_countryContext.SaveChanges() >= 0 ? true : false);
+		public async Task<bool> SaveAsync() => await _countryContext.SaveChangesAsync() >= 0 ? true : false;
 	}
 }

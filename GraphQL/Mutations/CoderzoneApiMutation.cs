@@ -55,7 +55,8 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 					}
 					// Country does not exist in database
 					//var ctup = await countryRepository.CountryExistsAsync(countryId);
-					if (!await countryRepository.CountryExistsAsync(countryId))
+					var countryInfoToUpdateOld = await countryRepository.GetCountryAsync(countryId);
+					if (countryInfoToUpdateOld == null)
 					{
 						context.Errors.Add(new ExecutionError($"{countryInfoToUpdate.Name} already exists!"));
 						return null;
@@ -69,7 +70,8 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 
 					// Now try to update the country
 					//countryInfoToUpdate.Id = countryId;
-					if (!await countryRepository.UpdateCountryAsync(countryInfoToUpdate))
+					countryInfoToUpdateOld.Name = countryInfoToUpdate.Name;
+					if (!await countryRepository.UpdateCountryAsync(countryInfoToUpdateOld))
 					{
 						context.Errors.Add(new ExecutionError($"Something went wrong Updating {countryInfoToUpdate.Name}"));
 						return null;
