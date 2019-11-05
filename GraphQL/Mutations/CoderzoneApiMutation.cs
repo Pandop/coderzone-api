@@ -80,7 +80,40 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 					return countryInfoToUpdate;
 				}
 			);
+			FieldAsync<CountryType>(
+				Name="RemoveCountry",
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "countryId" }),
+				resolve: async context =>
+				{
+					var countryId = context.GetArgument<Guid>("countryId");
 
+					var countryToDelete = await countryRepository.GetCountryAsync(countryId);
+
+					// Country does not exist in db
+					if (countryToDelete==null)
+					{
+						context.Errors.Add(new ExecutionError($"Country with ID {countryId} does not exist!"));
+						return null;
+					}
+
+					// Check that country does not have a state or programmer associated with it
+					var states = await countryRepository.GetStatesForCountryAsync(countryId);
+					var programmers = await countryRepository.GetUsersForCountryAsync(countryId);
+					if (states.Count() > 0 || programmers.Count() > 0)
+					{
+						context.Errors.Add(new ExecutionError($"{countryToDelete.Name} cannot be deleted as it's used by at least {programmers.Count()} programmers or {states.Count()} states!"));
+						return null;
+					}
+
+					// At stage, we can delete the country
+					if (!await countryRepository.DeleteCountryAsync(countryToDelete))
+					{
+						context.Errors.Add(new ExecutionError($"Something went wrong deleting {countryToDelete.Name}"));
+						return null;
+					}
+					return countryToDelete;
+				}
+			);
 		}
 	}
 }

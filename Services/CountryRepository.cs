@@ -40,14 +40,14 @@ namespace CoderzoneGrapQLAPI.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<IEnumerable<State>> GetStatesForCountryAsync(Guid countryId)
+		public async Task<IEnumerable<State>> GetStatesForCountryAsync(Guid countryId)
 		{
-			return Task.FromResult(_countryContext.States.Where(s=> s.Country.Id==countryId).AsEnumerable());
+			return await _countryContext.States.Where(s=> s.Country.Id==countryId).ToListAsync();
 		}
 
-		public Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid countryId)
+		public async Task<IEnumerable<Programmer>> GetUsersForCountryAsync(Guid countryId)
 		{
-			return Task.FromResult(_countryContext.Programmers.Where(c => c.Country.Id== countryId).AsEnumerable());
+			return await _countryContext.Programmers.Where(c => c.Country.Id== countryId).ToListAsync();
 		}
 
 		public async Task<bool> CountryExistsAsync(Guid countryId)
@@ -87,7 +87,7 @@ namespace CoderzoneGrapQLAPI.Services
 		public async Task<bool> DeleteCountryAsync(Country country)
 		{
 			// Remove country Object to country context and save it
-			_countryContext.Remove(country).State = EntityState.Modified;
+			_countryContext.Remove(country);
 			return await SaveAsync();
 		}
 
