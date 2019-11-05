@@ -52,7 +52,7 @@ namespace CoderzoneGrapQLAPI
 			// Register Profile Repository
 
 			// Register Country Repository
-			services.AddScoped<ICountryRepository, CountryRepository>();			
+			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
 			services.AddScoped<IProfileRepository, ProfileRepository>();
@@ -96,7 +96,7 @@ namespace CoderzoneGrapQLAPI
 
 			var sp = services.BuildServiceProvider();
 			services.AddSingleton<ISchema>(new CoderzoneApiSchema(new FuncDependencyResolver(type => sp.GetService(type))));
-			///
+			//
 			//services.AddSingleton<ISchema, CoderzoneApiSchema>();
 			//Register GraphQL Schema
 			//services.AddScoped<CoderzoneApiSchema>();
