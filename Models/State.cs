@@ -17,6 +17,7 @@ namespace CoderzoneGrapQLAPI.Models
 		[RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Post Code")]
 		public string PostCode { get; set; }
 
+		public Guid CountryId { get; set; }
 		public Country Country { get; set; }
 		public virtual ICollection<Programmer> Programmer { get; set; }
 

@@ -127,7 +127,7 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 				{
 					var stateToCreate = context.GetArgument<State>("state");
 					// Make sure the country exists in database
-					var stateCountry = await countryRepository.GetCountryAsync(stateToCreate.Country.Id);
+					var stateCountry = await countryRepository.GetCountryAsync(stateToCreate.CountryId);
 					if (stateCountry == null)
 					{
 						context.Errors.Add(new ExecutionError($"'{stateToCreate.Name}' does not exists!"));
@@ -135,13 +135,16 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 					}
 
 					// Make sure state is not already in the database
-					var stateInDatabase = stateRepository.GetStatesAsync().Result.FirstOrDefault(c => string.Equals(c.Name, stateToCreate.Name, StringComparison.OrdinalIgnoreCase));
+					var stateInDatabase = stateRepository.GetStatesAsync()
+											.Result.FirstOrDefault(c => string.Equals(c.Name, stateToCreate.Name, StringComparison.OrdinalIgnoreCase) && c.CountryId == stateCountry.Id);
 					if (stateInDatabase != null)
 					{
 						context.Errors.Add(new ExecutionError($"The State '{stateToCreate.Name}' already exists!"));
 						return null;
 					}
 					// Make sure a country was added successfully to database
+					//stateToCreate.Country.Id = stateToCreate.CountryId;
+
 					if (!await stateRepository.AddCountryAsync(stateToCreate))
 					{
 						context.Errors.Add(new ExecutionError($"Something went wrong saving {stateToCreate.Name}"));
