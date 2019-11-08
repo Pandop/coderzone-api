@@ -14,6 +14,13 @@ namespace CoderzoneGrapQLAPI.Services
 		{
 			_stateContext = stateContext;
 		}
+		public Task<State> GetStateAsync(Guid stateId)
+		{
+			if (stateId == Guid.Empty)
+				throw new ArgumentNullException(nameof(stateId));
+
+			return Task.FromResult(_stateContext.States.SingleOrDefault(s => s.Id == stateId));
+		}
 		public Task<IEnumerable<State>> GetStatesAsync()
 		{
 			return Task.FromResult(_stateContext.States.AsEnumerable());
@@ -35,16 +42,17 @@ namespace CoderzoneGrapQLAPI.Services
 			return await SaveAsync();
 		}
 
-		public Task<bool> DeleteStateAsync(Country country)
+		public Task<bool> DeleteStateAsync(State state)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<bool> UpdateStateAsync(Country country)
+		public Task<bool> UpdateStateAsync(State state)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<bool> SaveAsync() => await _stateContext.SaveChangesAsync() >= 0 ? true : false; 
+		public async Task<bool> SaveAsync() => await _stateContext.SaveChangesAsync() >= 0 ? true : false;
+		
 	}
 }

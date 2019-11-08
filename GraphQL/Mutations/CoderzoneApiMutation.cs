@@ -142,9 +142,8 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 						context.Errors.Add(new ExecutionError($"The State '{stateToCreate.Name}' already exists!"));
 						return null;
 					}
-					// Make sure a country was added successfully to database
-					//stateToCreate.Country.Id = stateToCreate.CountryId;
 
+					// Make sure a state was added successfully to database
 					if (!await stateRepository.AddCountryAsync(stateToCreate))
 					{
 						context.Errors.Add(new ExecutionError($"Something went wrong saving {stateToCreate.Name}"));
@@ -153,7 +152,49 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 					return stateToCreate;
 				}
 			);
+			FieldAsync<CountryType>(
+				Name = "UpdateState",
+				arguments: new QueryArguments(
+					new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "stateId" },
+					new QueryArgument<NonNullGraphType<CountryInputType>> { Name = "state" }),
+				resolve: async context =>
+				{
+					var stateId = context.GetArgument<Guid>("stateId");
+					var stateInfoToUpdate = context.GetArgument<Country>("state");
 
+					// country Ids do not match
+					if (stateId != stateInfoToUpdate.Id)
+					{
+						context.Errors.Add(new ExecutionError($"Bad Request!"));
+						return null;
+					}
+					// Country does not exist in database
+					//var ctup = await countryRepository.CountryExistsAsync(countryId);
+					var stateInfoToUpdateOld = await stateRepository.GetStateAsync(stateId);
+					if (stateInfoToUpdateOld == null)
+					{
+						context.Errors.Add(new ExecutionError($"{stateInfoToUpdate.Name} already exists!"));
+						return null;
+					}
+					// Country is a duplicate country
+					if (await stateRepository.IsDuplicateStateName(stateId, stateInfoToUpdate.Name))
+					{
+						context.Errors.Add(new ExecutionError($"The Country '{stateInfoToUpdate.Name}' already exists!"));
+						return null;
+					}
+
+					// Now try to update the country
+					//countryInfoToUpdate.Id = countryId;
+					stateInfoToUpdateOld.Name = stateInfoToUpdate.Name;
+					if (!await stateRepository.UpdateStateAsync(stateInfoToUpdateOld))
+					{
+						context.Errors.Add(new ExecutionError($"Something went wrong Updating {stateInfoToUpdate.Name}"));
+						return null;
+					}
+					// If all is good
+					return stateInfoToUpdate;
+				}
+			);
 		}
 
 	}
