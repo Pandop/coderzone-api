@@ -57,7 +57,7 @@ namespace CoderzoneGrapQLAPI
 			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
 			services.AddScoped<IProfileRepository, ProfileRepository>();
 			services.AddScoped<IProjectRepository, ProjectRepository>();
-			//services.AddScoped<IStateRepository, StateRepository>();
+			services.AddScoped<IStateRepository, StateRepository>();
 
 			//services.AddSingleton<ICountryRepository, CountryRepository>();
 
@@ -71,6 +71,7 @@ namespace CoderzoneGrapQLAPI
 			services.AddSingleton<CountryType>();
 			services.AddSingleton<CountryInputType>();
 			services.AddSingleton<StateType>();
+			services.AddSingleton<StateInputType>();
 			services.AddSingleton<ProgrammerType>();
 			services.AddSingleton<ProfileType>();
 			services.AddSingleton<SkillType>();
