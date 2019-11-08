@@ -24,7 +24,8 @@ namespace CoderzoneGrapQLAPI.helpers
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using CsharpReference.Graphql.Types;
+    using CoderzoneGrapQLAPI.GraphQL.Mutations.otherTypes;
+    using CsharpReference.Graphql.Types;
 	using CsharpReference.Helpers;
 	using CsharpReference.Models;
 	using CsharpReference.Services;
