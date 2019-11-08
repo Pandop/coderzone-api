@@ -15,16 +15,21 @@ namespace CoderzoneGrapQLAPI.Services
 		{
 			_stateContext = stateContext;
 		}
-		public Task<State> GetStateAsync(Guid stateId)
+		public async Task<State> GetStateAsync(Guid stateId)
 		{
 			if (stateId == Guid.Empty)
 				throw new ArgumentNullException(nameof(stateId));
 
-			return Task.FromResult(_stateContext.States.SingleOrDefault(s => s.Id == stateId));
+			return await _stateContext.States.SingleOrDefaultAsync(s => s.Id == stateId);
 		}
-		public Task<IEnumerable<State>> GetStatesAsync()
+		public async Task<IEnumerable<State>> GetStatesAsync()
 		{
-			return Task.FromResult(_stateContext.States.AsEnumerable());
+			return await _stateContext.States.ToListAsync();
+		}
+
+		public async Task<IEnumerable<Programmer>> GetAllUsersFromStateAsync(Guid stateId)
+		{
+			return await _stateContext.Programmers.Where(p => p.State.Id == stateId).ToListAsync();
 		}
 
 		public async Task<bool> IsDuplicateStateName(Guid stateId, string stateName)
@@ -33,7 +38,7 @@ namespace CoderzoneGrapQLAPI.Services
 			if (stateId == Guid.Empty)
 				throw new ArgumentNullException(nameof(stateId));
 
-			return await _stateContext.States.AnyAsync(s => s.Name.Equals(stateName) && s.Id == stateId);
+			return await _stateContext.States.AnyAsync(s => s.Name.Equals(stateName) && s.Id != stateId);
 		}
 
 		public Task<bool> StateExistsAsync(Guid stateId)
@@ -47,18 +52,18 @@ namespace CoderzoneGrapQLAPI.Services
 			return await SaveAsync();
 		}
 
-		public Task<bool> DeleteStateAsync(State state)
-		{
-			throw new NotImplementedException();
-		}
-
 		public async Task<bool> UpdateStateAsync(State state)
 		{
 			_stateContext.Update(state);
 			return await SaveAsync();
 		}
 
+		public async Task<bool> DeleteStateAsync(State state)
+		{
+			_stateContext.Remove(state);
+			return await SaveAsync();
+		}
+
 		public async Task<bool> SaveAsync() => await _stateContext.SaveChangesAsync() >= 0 ? true : false;
-		
 	}
 }

@@ -195,6 +195,39 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 					return stateInfoToUpdate;
 				}
 			);
+			FieldAsync<StateType>(
+				Name = "RemoveState",
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "stateId" }),
+				resolve: async context =>
+				{
+					var stateId = context.GetArgument<Guid>("stateId");
+
+					var stateToDelete = await stateRepository.GetStateAsync(stateId);
+
+					// State does not exist in db
+					if (stateToDelete == null)
+					{
+						context.Errors.Add(new ExecutionError($"State with ID: '{stateId}' does not exist!"));
+						return null;
+					}
+
+					// Check that State does not have a programmer associated with it
+					var programmers = await stateRepository.GetAllUsersFromStateAsync(stateId);
+					if (programmers.Count() > 0)
+					{
+						context.Errors.Add(new ExecutionError($"{stateToDelete.Name} cannot be deleted as it's used by at least {programmers.Count()} programmers!"));
+						return null;
+					}
+
+					// At stage, we can delete the State
+					if (!await stateRepository.DeleteStateAsync(stateToDelete))
+					{
+						context.Errors.Add(new ExecutionError($"Something went wrong deleting {stateToDelete.Name}"));
+						return null;
+					}
+					return stateToDelete;
+				}
+			);
 		}
 
 	}
