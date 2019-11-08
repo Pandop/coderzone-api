@@ -152,40 +152,40 @@ namespace CoderzoneGrapQLAPI.GraphQL.Mutations
 					return stateToCreate;
 				}
 			);
-			FieldAsync<CountryType>(
+			FieldAsync<StateType>(
 				Name = "UpdateState",
 				arguments: new QueryArguments(
 					new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "stateId" },
-					new QueryArgument<NonNullGraphType<CountryInputType>> { Name = "state" }),
+					new QueryArgument<NonNullGraphType<StateInputType>> { Name = "state" }),
 				resolve: async context =>
 				{
 					var stateId = context.GetArgument<Guid>("stateId");
-					var stateInfoToUpdate = context.GetArgument<Country>("state");
+					var stateInfoToUpdate = context.GetArgument<State>("state");
 
-					// country Ids do not match
+					// state Ids do not match
 					if (stateId != stateInfoToUpdate.Id)
 					{
 						context.Errors.Add(new ExecutionError($"Bad Request!"));
 						return null;
 					}
-					// Country does not exist in database
-					//var ctup = await countryRepository.CountryExistsAsync(countryId);
+					// State does not exist in database
 					var stateInfoToUpdateOld = await stateRepository.GetStateAsync(stateId);
 					if (stateInfoToUpdateOld == null)
 					{
 						context.Errors.Add(new ExecutionError($"{stateInfoToUpdate.Name} already exists!"));
 						return null;
 					}
-					// Country is a duplicate country
+					// State is a duplicate State
 					if (await stateRepository.IsDuplicateStateName(stateId, stateInfoToUpdate.Name))
 					{
-						context.Errors.Add(new ExecutionError($"The Country '{stateInfoToUpdate.Name}' already exists!"));
+						context.Errors.Add(new ExecutionError($"The State '{stateInfoToUpdate.Name}' already exists!"));
 						return null;
 					}
 
 					// Now try to update the country
-					//countryInfoToUpdate.Id = countryId;
 					stateInfoToUpdateOld.Name = stateInfoToUpdate.Name;
+					stateInfoToUpdateOld.PostCode = stateInfoToUpdate.PostCode;
+					stateInfoToUpdateOld.CountryId = stateInfoToUpdate.CountryId;
 					if (!await stateRepository.UpdateStateAsync(stateInfoToUpdateOld))
 					{
 						context.Errors.Add(new ExecutionError($"Something went wrong Updating {stateInfoToUpdate.Name}"));

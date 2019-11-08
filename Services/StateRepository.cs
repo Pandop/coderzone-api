@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoderzoneGrapQLAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoderzoneGrapQLAPI.Services
 {
@@ -26,9 +27,13 @@ namespace CoderzoneGrapQLAPI.Services
 			return Task.FromResult(_stateContext.States.AsEnumerable());
 		}
 
-		public Task<bool> IsDuplicateStateName(Guid stateId, string stateName)
+		public async Task<bool> IsDuplicateStateName(Guid stateId, string stateName)
 		{
-			throw new NotImplementedException();
+			// stateId is null or empty
+			if (stateId == Guid.Empty)
+				throw new ArgumentNullException(nameof(stateId));
+
+			return await _stateContext.States.AnyAsync(s => s.Name.Equals(stateName) && s.Id == stateId);
 		}
 
 		public Task<bool> StateExistsAsync(Guid stateId)
@@ -47,9 +52,10 @@ namespace CoderzoneGrapQLAPI.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<bool> UpdateStateAsync(State state)
+		public async Task<bool> UpdateStateAsync(State state)
 		{
-			throw new NotImplementedException();
+			_stateContext.Update(state);
+			return await SaveAsync();
 		}
 
 		public async Task<bool> SaveAsync() => await _stateContext.SaveChangesAsync() >= 0 ? true : false;
