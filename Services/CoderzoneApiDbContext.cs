@@ -1,21 +1,28 @@
 ﻿using CoderzoneGrapQLAPI.Models;
 using CsharpReference.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace CoderzoneGrapQLAPI.Services
 {
 	public class CoderzoneApiDbContext : DbContext
 	{
-		public CoderzoneApiDbContext(DbContextOptions<CoderzoneApiDbContext> options) : base(options)
+		public CoderzoneApiDbContext(DbContextOptions<CoderzoneApiDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
 		{
 			// run migration at app starts
 			Database.Migrate();
+			//_helper.SetConfig(this);
+			SessionUser = httpContextAccessor?.HttpContext?.User?.FindFirst("UserId")?.Value;
+			SessionId = httpContextAccessor?.HttpContext?.TraceIdentifier;
 		}
 
+		public string SessionUser { get; }
+		public string SessionId { get; }
 		// Tell EF what tables what tables it need to set up
 		public virtual DbSet<Profile> Profiles { get; set; }
 		public virtual DbSet<Country> Countries { get; set; }
