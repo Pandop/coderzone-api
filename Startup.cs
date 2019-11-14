@@ -55,114 +55,17 @@ namespace CoderzoneGrapQLAPI
 		public void ConfigureServices(IServiceCollection services)
 		{
 			// add mvc if needed
-			services.AddMvc(option => 
-				{
-					option.Filters.Add(new XsrfActionFilterAttribute());
-					option.Filters.Add(new AuthenticationFilterAttribute());
-				})
+			services.AddMvc()
 				.AddControllersAsServices()
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
 				.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-			services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-
+			
 			// Setup DB Connections
 			services.AddDbContext<CoderzoneApiDbContext>(options => options.UseSqlServer(Configuration["connectionStrings:CoderzoneDbConnectionString"]));
 
 			// Register Users Repository
-			// Register Identity Services
-			services.AddIdentity<Coder, Group>(options => { options.User.AllowedUserNameCharacters += @"\*"; })
-				.AddEntityFrameworkStores<CoderzoneApiDbContext>()
-				.AddDefaultTokenProviders();
 
-			services.Configure<IdentityOptions>(options =>
-			{
-				options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-				options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-				options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-
-				options.Password.RequireDigit = true;
-			});
-
-			var certSetting = Configuration.GetSection("CertificateSetting").Get<CertificateSetting>();
-
-			services.AddOpenIddict()
-				.AddCore(options =>
-				{
-					options.UseEntityFrameworkCore()
-						.UseDbContext<CoderzoneApiDbContext>()
-						.ReplaceDefaultEntities<Guid>();
-				})
-				.AddServer(options =>
-				{
-					options.UseMvc();
-					options.EnableTokenEndpoint("/api/authorization/connect/token");
-
-					X509Certificate2 cert = null;
-					if (_env.IsDevelopment())
-					{
-						cert = new InRootFolderCertificateProvider(certSetting).ReadX509SigningCert();
-					}
-					else
-					{
-						// not for production, currently using the same as development testing.
-						// todo: Create another Certificate Provider Inheriting BaseCertificateProvider, and override ReadX509SigningCert
-						// to read cerficicate from another more secure place, e.g cerficate store, aws server...
-						cert = new InRootFolderCertificateProvider(certSetting).ReadX509SigningCert();
-					}
-
-					if (cert == null)
-					{
-						// not for production, use x509 certificate and .AddSigningCertificate()
-						options.AddEphemeralSigningKey();
-					}
-					else
-					{
-						options.AddSigningCertificate(cert);
-					}
-
-					// use jwt
-					options.UseJsonWebTokens();
-					options.AllowPasswordFlow();
-					options.AllowRefreshTokenFlow();
-					options.AcceptAnonymousClients();
-					options.DisableHttpsRequirement();
-				});
-
-			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-			JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
-
-			services.AddAuthentication(options =>
-			{
-				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-				{
-					options.LoginPath = "/api/authorization/login";
-					options.LogoutPath = "/api/authorization/logout";
-					options.SlidingExpiration = true;
-					options.ExpireTimeSpan = TimeSpan.FromDays(7);
-					options.Events.OnRedirectToLogin = redirectOptions =>
-					{
-						redirectOptions.Response.StatusCode = StatusCodes.Status401Unauthorized;
-						return Task.CompletedTask;
-					};
-				})
-				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
-					options.Authority = certSetting.JwtBearerAuthority;
-					options.Audience = certSetting.JwtBearerAudience;
-					options.RequireHttpsMetadata = false;
-					options.IncludeErrorDetails = true;
-					options.TokenValidationParameters = new TokenValidationParameters()
-					{
-						NameClaimType = OpenIdConnectConstants.Claims.Subject,
-						RoleClaimType = OpenIdConnectConstants.Claims.Role
-					};
-				});
-
-			// Register Profile Repository
-
-			// Register Country Repository
+			// Register repositories
 			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<ICountryRepository, CountryRepository>();
 			services.AddScoped<IProgrammerRepository, ProgrammerRepository>();
