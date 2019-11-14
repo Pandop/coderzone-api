@@ -1,39 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoderzoneGrapQLAPI.Api.DbSeeds;
+﻿using CoderzoneGrapQLAPI.Api.DbSeeds;
 using CoderzoneGrapQLAPI.GraphQL;
 using CoderzoneGrapQLAPI.Services;
-using CoderzoneGrapQLAPI.Api.Middlewares;
 using GraphiQl;
 using GraphQL;
-using GraphQL.Http;
 using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CoderzoneGrapQLAPI.GraphQL.Types;
 using GraphQL.DataLoader;
-using GraphQL.Execution;
 using CoderzoneGrapQLAPI.GraphQL.Mutations;
 using Microsoft.AspNetCore.Mvc;
-using CoderzoneGrapQLAPI.helpers.utils;
-using AspNet.Security.OpenIdConnect.Primitives;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.IdentityModel.Tokens.Jwt;
-using CoderzoneGrapQLAPI.helpers;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Cryptography.X509Certificates;
-
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 
 namespace CoderzoneGrapQLAPI
 {

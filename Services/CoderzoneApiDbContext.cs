@@ -1,11 +1,6 @@
 ﻿using CoderzoneGrapQLAPI.Models;
-using CsharpReference.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace CoderzoneGrapQLAPI.Services
@@ -50,14 +45,14 @@ namespace CoderzoneGrapQLAPI.Services
 
 		}
 
-		public DbSet<T> GetDbSet<T>(string name = null) where T : class, IAbstractModel
-		{
-			return GetType().GetProperty(name ?? typeof(T).Name).GetValue(this, null) as DbSet<T>;
-		}
+		//public DbSet<T> GetDbSet<T>(string name = null) where T : class, IAbstractModel
+		//{
+		//	return GetType().GetProperty(name ?? typeof(T).Name).GetValue(this, null) as DbSet<T>;
+		//}
 
-		public IQueryable GetOwnerDbSet(string name)
-		{
-			return GetType().GetProperty(name).GetValue(this, null) as IQueryable;
-		}
+		//public IQueryable GetOwnerDbSet(string name)
+		//{
+		//	return GetType().GetProperty(name).GetValue(this, null) as IQueryable;
+		//}
 	}
 }
